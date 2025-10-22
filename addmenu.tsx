@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 
-import { RootStackParamList } from './Splash';
+import { RootStackParamList } from './App';
 import { Picker } from '@react-native-picker/picker';
 
 export default function AddMenu() {
@@ -25,9 +25,86 @@ export default function AddMenu() {
     image: '',
   });
 
+  const [errors, setErrors] = useState({
+    name: '',
+    description: '',
+    price: '',
+    image: '',
+  });
+
+  const validateForm = () => {
+    let isValid = true;
+    const newErrors = {
+      name: '',
+      description: '',
+      price: '',
+      image: '',
+    };
+
+    if (!formData.name.trim()) {
+      newErrors.name = 'Name is required';
+      isValid = false;
+    }
+
+    if (!formData.description.trim()) {
+      newErrors.description = 'Description is required';
+      isValid = false;
+    }
+
+    if (!formData.price.trim()) {
+      newErrors.price = 'Price is required';
+      isValid = false;
+    } else if (isNaN(Number(formData.price))) {
+      newErrors.price = 'Price must be a number';
+      isValid = false;
+    }
 
 
+    setErrors(newErrors);
+    return isValid;
+  };
 
+  const handleSubmit = () => {
+    if (validateForm()) {
+      const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
+      const addMenuItem = menuRoute?.params?.addMenuItem;
+
+      if (addMenuItem) {
+        // Convert price string to number
+        const menuItem = {
+          name: formData.name,
+          description: formData.description,
+          course: formData.course,
+          price: parseFloat(formData.price),
+          image: formData.image,
+        };
+
+        addMenuItem(menuItem);
+        
+        // Show quick success message
+        Alert.alert('Success', 'Menu item added successfully!', [
+          {
+            text: 'OK',
+            onPress: () => {
+              // Clear form data
+              setFormData({
+                name: '',
+                description: '',
+                course: 'main course',
+                price: '',
+                image: '',
+              });
+              // Navigate back to Menu screen
+              navigation.navigate('Menu', {});
+            }
+          }
+        ]);
+      } else {
+        // Handle the case where addMenuItem is not available
+        Alert.alert('Error', 'Could not add menu item. Please try again.');
+      }
+    }
+  };
 
   return (
     <KeyboardAvoidingView
@@ -46,7 +123,7 @@ export default function AddMenu() {
               value={formData.name}
               onChangeText={(text) => setFormData({ ...formData, name: text })}
             />
-           
+            {errors.name ? <Text >{errors.name}</Text> : null}
           </View>
 
           <View >
@@ -59,7 +136,7 @@ export default function AddMenu() {
               multiline
               numberOfLines={3}
             />
-           
+            {errors.description ? <Text >{errors.description}</Text> : null}
           </View>
 
           <View >
@@ -86,7 +163,7 @@ export default function AddMenu() {
               onChangeText={(text) => setFormData({ ...formData, price: text })}
               keyboardType="decimal-pad"
             />
-           
+            {errors.price ? <Text >{errors.price}</Text> : null}
           </View>
 
           <View >
@@ -97,7 +174,7 @@ export default function AddMenu() {
               value={formData.image}
               onChangeText={(text) => setFormData({ ...formData, image: text })}
             />
-    
+            {errors.image ? <Text >{errors.image}</Text> : null}
           </View>
 
           <View >
@@ -110,7 +187,7 @@ export default function AddMenu() {
 
             <TouchableOpacity 
              
-             
+              onPress={handleSubmit}
             >
               <Text >Add Item</Text>
             </TouchableOpacity>
