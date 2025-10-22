@@ -59,6 +59,13 @@ export default function AddMenu() {
       isValid = false;
     }
 
+    if (!formData.image.trim()) {
+      newErrors.image = 'Image URL is required';
+      isValid = false;
+    } else if (!formData.image.startsWith('http')) {
+      newErrors.image = 'Please enter a valid image URL';
+      isValid = false;
+    }
 
     setErrors(newErrors);
     return isValid;
@@ -109,39 +116,39 @@ export default function AddMenu() {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-  
+      style={styles.container}
     >
-      <ScrollView >
-        <View >
-          <Text>Add New Menu Item</Text>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.form}>
+          <Text style={styles.title}>Add New Menu Item</Text>
 
-          <View>
-            <Text>Name</Text>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Name</Text>
             <TextInput
-             
+              style={[styles.input, errors.name && styles.inputError]}
               placeholder="Enter menu item name"
               value={formData.name}
               onChangeText={(text) => setFormData({ ...formData, name: text })}
             />
-            {errors.name ? <Text >{errors.name}</Text> : null}
+            {errors.name ? <Text style={styles.errorText}>{errors.name}</Text> : null}
           </View>
 
-          <View >
-            <Text >Description</Text>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Description</Text>
             <TextInput
-             
+              style={[styles.input, styles.textArea, errors.description && styles.inputError]}
               placeholder="Enter menu item description"
               value={formData.description}
               onChangeText={(text) => setFormData({ ...formData, description: text })}
               multiline
               numberOfLines={3}
             />
-            {errors.description ? <Text >{errors.description}</Text> : null}
+            {errors.description ? <Text style={styles.errorText}>{errors.description}</Text> : null}
           </View>
 
-          <View >
-            <Text >Course</Text>
-            <View >
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Course</Text>
+            <View style={styles.pickerContainer}>
               <Picker
                 selectedValue={formData.course}
                 onValueChange={(itemValue) => setFormData({ ...formData, course: itemValue })}
@@ -154,42 +161,42 @@ export default function AddMenu() {
             </View>
           </View>
 
-          <View>
-            <Text>Price (R)</Text>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Price (R)</Text>
             <TextInput
-             
+              style={[styles.input, errors.price && styles.inputError]}
               placeholder="Enter price"
               value={formData.price}
               onChangeText={(text) => setFormData({ ...formData, price: text })}
               keyboardType="decimal-pad"
             />
-            {errors.price ? <Text >{errors.price}</Text> : null}
+            {errors.price ? <Text style={styles.errorText}>{errors.price}</Text> : null}
           </View>
 
-          <View >
-            <Text >Image</Text>
+          <View style={styles.inputGroup}>
+            <Text style={styles.label}>Image</Text>
             <TextInput
-              
+              style={[styles.input, errors.image && styles.inputError]}
               placeholder="Enter image URL"
               value={formData.image}
               onChangeText={(text) => setFormData({ ...formData, image: text })}
             />
-            {errors.image ? <Text >{errors.image}</Text> : null}
+            {errors.image ? <Text style={styles.errorText}>{errors.image}</Text> : null}
           </View>
 
-          <View >
+          <View style={styles.buttonGroup}>
             <TouchableOpacity 
-            
+              style={styles.cancelButton}
               onPress={() => navigation.goBack()}
             >
-              <Text >Cancel</Text>
+              <Text style={styles.cancelButtonText}>Cancel</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
-             
+              style={styles.submitButton}
               onPress={handleSubmit}
             >
-              <Text >Add Item</Text>
+              <Text style={styles.submitButtonText}>Add Item</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -198,3 +205,116 @@ export default function AddMenu() {
   );
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff'
+  },
+  scrollView: {
+    flex: 1
+  },
+  form: {
+    padding: 20
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: 20,
+    color: '#333'
+  },
+  inputGroup: {
+    marginBottom: 16
+  },
+  label: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#333'
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16
+  },
+  inputError: {
+    borderColor: '#ff3b30'
+  },
+  errorText: {
+    color: '#ff3b30',
+    fontSize: 14,
+    marginTop: 4
+  },
+  textArea: {
+    height: 100,
+    textAlignVertical: 'top'
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: '#00a6ffff',
+    borderRadius: 8,
+    overflow: 'hidden'
+  },
+  picker: {
+    height: 50,
+    width: '100%'
+  },
+  courseOptions: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 8,
+  },
+  courseOption: {
+    flex: 1,
+    paddingVertical: 10,
+    marginHorizontal: 4,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  courseOptionSelected: {
+    backgroundColor: '#007AFF',
+    borderColor: '#007AFF'
+  },
+  courseOptionText: {
+    color: '#333'
+  },
+  courseOptionTextSelected: {
+    color: '#fff'
+  },
+  buttonGroup: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20
+  },
+  submitButton: {
+    backgroundColor: '#007AFF',
+    borderRadius: 8,
+    padding: 15,
+    flex: 1,
+    marginLeft: 8
+  },
+  submitButtonText: {
+    color: '#fff',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '600'
+  },
+  cancelButton: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    padding: 15,
+    flex: 1,
+    marginRight: 8,
+    borderWidth: 1,
+    borderColor: '#007AFF'
+  },
+  cancelButtonText: {
+    color: '#007AFF',
+    textAlign: 'center',
+    fontSize: 16,
+    fontWeight: '600'
+  }
+});
