@@ -1,3 +1,22 @@
+/*
+CODE ATTRIBUTION
+Author:The IIE
+Title: Creating a simple user interface
+Date Published:2025
+Link/Accessed at:https://advtechonline.sharepoint.com/:w:/r/sites/TertiaryStudents/_layouts/15/Doc.aspx?sourcedoc=%7BC4AAF478-96AC-4469-8005-F7CDC4A15EBB%7D&file=MAST5112MM.docx&action=default&mobileredirect=true
+Date accessed:22/10/2025
+*/
+/*
+CODE ATTRIBUTION
+Author:The IIE
+Title: core user interface components
+Date Published:2025
+Link/Accessed at:https://advtechonline.sharepoint.com/:w:/r/sites/TertiaryStudents/_layouts/15/Doc.aspx?sourcedoc=%7BC4AAF478-96AC-4469-8005-F7CDC4A15EBB%7D&file=MAST5112MM.docx&action=default&mobileredirect=true
+Date accessed:22/10/2025
+*/
+
+
+
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
@@ -38,10 +57,7 @@ function HomeScreen({ navigation }: any) {
         style={styles.menuButton}
         onPress={() => navigation.navigate('Menu')}
       >
-       <Image
-         source={require('./image_assets/splashmenu69.png')}
-         style={styles.buttonImage}
-       />
+      <Text style={styles.buttonText}>View Menu</Text>
         
       </TouchableOpacity>
 
@@ -91,12 +107,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   menuButton: {
+
     flexDirection: 'column',
     alignItems: 'center',
-    backgroundColor: '#000000ff',
+    backgroundColor: '#007AFF',
     borderRadius: 1,
     marginTop: 2,
-    shadowColor: '#1aff00ff',
+    padding: 10,
+    shadowColor: '#000000ff',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -105,13 +123,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
-  buttonImage: {
-    width: 60,
-    height: 80,
-    marginBottom: 1,
-  },
+ 
   buttonText: {
-    color: '#333',
+    color: '#ffffff',
     fontSize: 16,
     fontWeight: '600',
   }

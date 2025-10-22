@@ -1,3 +1,18 @@
+/*
+CODE ATTRIBUTION
+Author: The IIE
+Title:if statement 
+Date Published:2025
+Link/Accessed at:https://advtechonline.sharepoint.com/:w:/r/sites/TertiaryStudents/_layouts/15/Doc.aspx?sourcedoc=%7BC4AAF478-96AC-4469-8005-F7CDC4A15EBB%7D&file=MAST5112MM.docx&action=default&mobileredirect=true
+Date accessed:22/10/2025
+*/
+
+
+
+
+
+
+
 import React, { useState } from 'react';
 import {
   StyleSheet,
@@ -58,15 +73,6 @@ export default function AddMenu() {
       newErrors.price = 'Price must be a number';
       isValid = false;
     }
-
-    if (!formData.image.trim()) {
-      newErrors.image = 'Image URL is required';
-      isValid = false;
-    } else if (!formData.image.startsWith('http')) {
-      newErrors.image = 'Please enter a valid image URL';
-      isValid = false;
-    }
-
     setErrors(newErrors);
     return isValid;
   };
@@ -189,14 +195,14 @@ export default function AddMenu() {
               style={styles.cancelButton}
               onPress={() => navigation.goBack()}
             >
-              <Text style={styles.cancelButtonText}>Cancel</Text>
+              <Text style={styles.cancelButtonText}>BACK TO MENU</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.submitButton}
               onPress={handleSubmit}
             >
-              <Text style={styles.submitButtonText}>Add Item</Text>
+              <Text style={styles.submitButtonText}>ADD NEW ITEM</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -251,7 +257,7 @@ const styles = StyleSheet.create({
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: '#00a6ffff',
+    borderColor: '#4d4b4bff',
     borderRadius: 8,
     overflow: 'hidden'
   },
@@ -290,7 +296,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   submitButton: {
-    backgroundColor: '#007AFF',
+    backgroundColor: '#4d9418',
     borderRadius: 8,
     padding: 15,
     flex: 1,
@@ -309,10 +315,10 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 8,
     borderWidth: 1,
-    borderColor: '#007AFF'
+    borderColor: '#ff0000ff'
   },
   cancelButtonText: {
-    color: '#007AFF',
+    color: '#ff0000ff',
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '600'

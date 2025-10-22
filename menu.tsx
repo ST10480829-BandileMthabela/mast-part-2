@@ -1,3 +1,13 @@
+/*
+CODE ATTRIBUTION
+Author:
+Title:
+Date Published:
+Link/Accessed at:
+Date accessed:22/10/2025
+*/
+
+
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
@@ -30,7 +40,7 @@ const INITIAL_DISHES: MenuItem[] = [
     description: 'Delicious cheese pizza with pepperoni and a crispy crust',
     course: 'Main Course',
     price: 79.99,
-    image: 'https://th.bing.com/th/id/OIP.8No7LgYczYc66dDgftC_BwHaE8?w=251&h=180&c=7&r=0&o=7&cb=12&pid=1.7&rm=3',
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
   },
   {
     id: '3',
@@ -40,6 +50,23 @@ const INITIAL_DISHES: MenuItem[] = [
     price: 25.00,
     image: 'https://images.unsplash.com/photo-1518013431117-eb1465fa5752?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnJpZXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600',
   },
+   {
+    id: '4',
+    name: 'Chocolate Cake',
+    description: 'Rich chocolate cake with a creamy frosting',
+    course: 'Dessert',
+    price: 90.00,
+    image: 'https://images.unsplash.com/photo-1646678257756-a56adbd0d8f8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
+  },
+  {
+    id: '5',
+    name: 'Fish',
+    description: 'Grilled fish served with lemon and herbs',
+    course: 'Main Course',
+    price: 230.00,
+    image: 'https://images.unsplash.com/photo-1580959375944-abd7e991f971?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1976',
+  },
+  
 
 ];
 
@@ -57,45 +84,83 @@ export default function Menu() {
   }, [navigation, addMenuItem]);
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <View>
-          <Text style={styles.headerText}>Our Menu</Text>
-          <Text style={styles.itemCount}>{menuItems.length} items</Text>
+    <View style={styles.mainContainer}>
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.headerText}>Menu</Text>
+            <Text style={styles.itemCount}>{menuItems.length} items</Text>
+          </View>
         </View>
+      
+        {menuItems.map((dish) => (
+          <TouchableOpacity key={dish.id} style={styles.card}>
+            <Image
+              source={{ uri: dish.image }}
+              style={styles.image}
+            />
+            <View style={styles.cardContent}>
+              <View style={styles.titleRow}>
+                <Text style={styles.name}>{dish.name}</Text>
+                <Text style={styles.price}>R{dish.price.toFixed(2)}</Text>
+              </View>
+              <Text style={styles.course}>{dish.course}</Text>
+              <Text style={styles.description}>{dish.description}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+        <View style={styles.bottomSpacing} />
+      </ScrollView>
+
+      <View style={styles.navBar}>
         <TouchableOpacity 
           style={styles.addButton}
           onPress={() => navigation.navigate('AddMenu')}
         >
-          <Text style={styles.addButtonText}>+ Add Item</Text>
+          <Image source={require('./image_assets/blueaddicon.jpg')} style={styles.addButtonIcon} />
         </TouchableOpacity>
       </View>
-      
-      {menuItems.map((dish) => (
-        <TouchableOpacity key={dish.id} style={styles.card}>
-          <Image
-            source={{ uri: dish.image }}
-            style={styles.image}
-          />
-          <View style={styles.cardContent}>
-            <View style={styles.titleRow}>
-              <Text style={styles.name}>{dish.name}</Text>
-              <Text style={styles.price}>R{dish.price.toFixed(2)}</Text>
-            </View>
-            <Text style={styles.course}>{dish.course}</Text>
-            <Text style={styles.description}>{dish.description}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
       <StatusBar style="auto" />
-    </ScrollView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
   container: {
     flex: 1,
     backgroundColor: '#f5f5f5'
+  },
+  navBar: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: 90,
+    backgroundColor: '#fff',
+
+    borderTopColor: '#eee',
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: -2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  },
+  bottomSpacing: {
+    height: 80,
+  },
+  addButtonIcon: {
+    width: 24,
+    height: 24,
+    tintColor: '#fff'
   },
   header: {
     padding: 16,
@@ -109,9 +174,19 @@ const styles = StyleSheet.create({
     },
     addButton: {
       backgroundColor: '#007AFF',
-      paddingHorizontal: 16,
-      paddingVertical: 8,
-      borderRadius: 8
+      width: 70,
+      height: 70,
+      borderRadius: 25,
+      justifyContent: 'center',
+      alignItems: 'center',
+      elevation: 4,
+      shadowColor: '#000',
+      shadowOffset: {
+        width: 0,
+        height: 2,
+      },
+      shadowOpacity: 0.25,
+      shadowRadius: 3.84,
     },
     addButtonText: {
       color: '#fff',
