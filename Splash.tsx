@@ -24,21 +24,21 @@ export type RootStackParamList = {
 function HomeScreen({ navigation }: any) {
   return (
     <View style={styles.container}>
-      <Text >WELCOME TO CAFE FRESH</Text>
+      <Text style={styles.title}>WELCOME TO CAFE FRESH</Text>
 
       <Image 
         source={{ uri: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687' }}
-       
+        style={styles.mainImage}
       />
-      <Text >Fresh cafe isn't just a place get food, it's a destination where food is celebrated.</Text>
+      <Text style={styles.description}>Fresh cafe isn't just a place get food, it's a destination where food is celebrated.</Text>
 
       <TouchableOpacity 
-       
+        style={styles.menuButton}
         onPress={() => navigation.navigate('Menu')}
       >
        <Image
          source={require('./image_assets/splashmenu69.png')}
-        
+         style={styles.buttonImage}
        />
         
       </TouchableOpacity>
@@ -56,6 +56,48 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
- 
+  title: {
+    fontSize: 24,
+    fontWeight: '600',
+    marginBottom: 20,
+    color: '#333',
+  },
+  description: {
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 20,
+    color: '#666',
+  },
+  mainImage: {
+    width: 300,
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 20,
+  },
+  menuButton: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#000000ff',
+    borderRadius: 1,
+    marginTop: 2,
+    shadowColor: '#1aff00ff',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  buttonImage: {
+    width: 60,
+    height: 80,
+    marginBottom: 1,
+  },
+  buttonText: {
+    color: '#333',
+    fontSize: 16,
+    fontWeight: '600',
+  }
 });
 
