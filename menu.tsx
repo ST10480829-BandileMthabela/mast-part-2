@@ -7,6 +7,17 @@ Link/Accessed at:
 Date accessed:22/10/2025
 */
 
+/*
+CODE ATTRIBUTION
+Author:Codevolution
+Title: 
+React Native Tutorial - 74 - Navigation between Screens
+Date Published:2023
+Link/Accessed at:https://www.youtube.com/watch?v=HuwQwNDLaJ8
+Date accessed:21/10/2025
+*/
+
+
 
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
@@ -24,7 +35,6 @@ export interface MenuItem {
   image: string;
 }
 
-// Initial dishes to display on startup
 const INITIAL_DISHES: MenuItem[] = [
   {
     id: '1',

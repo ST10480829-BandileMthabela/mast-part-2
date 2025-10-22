@@ -7,6 +7,15 @@ Link/Accessed at:https://advtechonline.sharepoint.com/:w:/r/sites/TertiaryStuden
 Date accessed:22/10/2025
 */
 
+/*
+CODE ATTRIBUTION
+Author: Easy Learning
+Title: 131 - The Picker Component in React Native
+Date Published:2025
+Link/Accessed at:https://www.youtube.com/watch?v=dSY6HJc7CXE
+Date accessed:22/10/2025
+*/
+
 
 
 

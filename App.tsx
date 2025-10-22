@@ -1,11 +1,32 @@
 /*
 CODE ATTRIBUTION
+Author:Codevolution
+Title: 
+React Native Tutorial - 74 - Navigation between Screens
+Date Published:2023
+Link/Accessed at:https://www.youtube.com/watch?v=HuwQwNDLaJ8
+Date accessed:21/10/2025
+*/
+
+/*
+CODE ATTRIBUTION
+Author:Simon Grimm
+Title: Better than React Native Stylesheet 
+Date Published:2024
+Link/Accessed at:https://youtu.be/OT5hQbvGRW8?si=ogmIVJQVcikX7hbK
+Date accessed:22/10/2025
+*/
+
+
+/*
+CODE ATTRIBUTION
 Author:The IIE
 Title: Creating a simple user interface
 Date Published:2025
 Link/Accessed at:https://advtechonline.sharepoint.com/:w:/r/sites/TertiaryStudents/_layouts/15/Doc.aspx?sourcedoc=%7BC4AAF478-96AC-4469-8005-F7CDC4A15EBB%7D&file=MAST5112MM.docx&action=default&mobileredirect=true
 Date accessed:22/10/2025
 */
+
 /*
 CODE ATTRIBUTION
 Author:The IIE
@@ -14,6 +35,9 @@ Date Published:2025
 Link/Accessed at:https://advtechonline.sharepoint.com/:w:/r/sites/TertiaryStudents/_layouts/15/Doc.aspx?sourcedoc=%7BC4AAF478-96AC-4469-8005-F7CDC4A15EBB%7D&file=MAST5112MM.docx&action=default&mobileredirect=true
 Date accessed:22/10/2025
 */
+
+
+
 
 
 
