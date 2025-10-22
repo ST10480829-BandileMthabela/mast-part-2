@@ -10,6 +10,15 @@ Date accessed:21/10/2025
 
 /*
 CODE ATTRIBUTION
+Author:Nathan Dumlao
+Title: coffee
+Date Published:2017
+Link/Accessed at:https://unsplash.com/photos/flat-lay-photography-of-coffee-latte-ground-coffee-and-coffee-beans-Y3AqmbmtLQI
+Date accessed:21/10/2025
+*/
+
+/*
+CODE ATTRIBUTION
 Author:Simon Grimm
 Title: Better than React Native Stylesheet 
 Date Published:2024

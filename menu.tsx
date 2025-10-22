@@ -1,10 +1,37 @@
 /*
 CODE ATTRIBUTION
-Author:
-Title:
-Date Published:
-Link/Accessed at:
+Author:Ivan Torres
+Title: pizza 
+Date Published: 2017
+Link/Accessed at:https://unsplash.com/photos/pizza-with-berries-MQUqbmszGGM
 Date accessed:22/10/2025
+*/
+
+/*
+CODE ATTRIBUTION
+Author:Pixzolo Photography
+Title: fries and ketchup
+Date Published:2018
+Link/Accessed at: https://unsplash.com/photos/fries-and-ketchup-8YBHgP0WrEo
+Date accessed:22/10/2025
+*/
+
+/*
+CODE ATTRIBUTION
+Author:Nahima Aparicio
+Title: a piece of cake with fruit on top
+Date Published:2022
+Link/Accessed at:https://unsplash.com/photos/a-piece-of-cake-with-fruit-on-top-of-it-Tb6VJvW_lqU
+Date accessed:22/10/2025
+*/
+
+/*
+CODE ATTRIBUTION
+Author: Jennifer Burk
+Title: a white plate topped with a piece of fish
+Date Published: 2020
+Link/Accessed at: https://unsplash.com/photos/a-white-plate-topped-with-a-piece-of-fish-gwBcamFtPr4
+Date accessed: 22/10/2025
 */
 
 /*
@@ -62,7 +89,7 @@ const INITIAL_DISHES: MenuItem[] = [
   },
    {
     id: '4',
-    name: 'Chocolate Cake',
+    name: 'Cake',
     description: 'Rich chocolate cake with a creamy frosting',
     course: 'Dessert',
     price: 90.00,
