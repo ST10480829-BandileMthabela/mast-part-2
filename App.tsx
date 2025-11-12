@@ -145,7 +145,7 @@ menuButton: {
 
 flexDirection: 'column',
 alignItems: 'center',
-backgroundColor: '#007AFF',
+backgroundColor: '#1f6a8c',
 borderRadius: 1,
 marginTop: 2,
 padding: 10,

@@ -1,17 +1,10 @@
-/**
- * ============================================================
- * CHEF MENU MANAGEMENT SYSTEM - FILTER SCREEN
- * ============================================================
- * 
- * This screen allows users to filter menu items by course type:
- * - Appetiser, Main Course, Dessert, or All Items
- * - Displays filtered results with image, name, price, course, description
- * - Updates in real-time when focus returns to screen (new items appear)
- * 
- * ============================================================
- * CODE ATTRIBUTION
- * ============================================================
- */
+/*
+This screen allows users to filter menu items by course type:
+
+- Appetiser, Main Course, Dessert, or All Items
+- Displays filtered results with image, name, price, course, description
+- Updates in real-time when focus returns to screen (new items appear)
+*/
 
 /*
 CODE ATTRIBUTION - Picker Component Reference
@@ -56,7 +49,7 @@ import { MenuItem, getGlobalMenuItems } from './menu';
 // Global variable to store all menu items for this screen
 let globalMenuItems: MenuItem[] = [];
 
-/**
+/*
  * Filter Component
  * Provides course-based filtering and displays filtered menu items
  * WHILE LOOP: used in getFilteredItems() to filter items by course
@@ -70,7 +63,7 @@ export default function Filter() {
   // State for all menu items
   const [allMenuItems, setAllMenuItems] = useState<MenuItem[]>([]);
 
-  /**
+  /*
    * Initialize Filter - Load Menu Items
    * Fetches menu items on component mount
    * Uses fallback getter if navigation params unavailable
@@ -91,7 +84,7 @@ export default function Filter() {
     }
   }, [navigation]);
 
-  /**
+  /*
    * Refresh on Focus
    * Reloads menu items when user returns to Filter screen
    * Ensures newly added items appear without restart

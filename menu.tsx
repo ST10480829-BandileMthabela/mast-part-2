@@ -1,16 +1,8 @@
-/**
- * ============================================================
- * CHEF MENU MANAGEMENT SYSTEM - MENU SCREEN
- * ============================================================
- * 
- * This screen displays all menu items added by chefs and provides
- * navigation to Filter and Add Menu screens. Users can view dishes
- * with images, descriptions, prices, and course types.
- * 
- * ============================================================
- * CODE ATTRIBUTION - IMAGES
- * ============================================================
- */
+/*
+ This screen displays all menu items added by chefs and provides
+ navigation to Filter and Add Menu screens. Users can view dishes
+ with images, descriptions, prices, and course types.
+*/
 
 /*
 CODE ATTRIBUTION - Pizza Image

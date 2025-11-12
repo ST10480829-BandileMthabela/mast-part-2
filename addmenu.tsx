@@ -1,20 +1,12 @@
-﻿/**
- * ============================================================
- * CHEF MENU MANAGEMENT SYSTEM - ADD MENU SCREEN
- * ============================================================
- * 
- * This screen allows chefs to add new items to the menu.
- * Features:
- * - Add multiple items in a single session
- * - View and manage existing menu items
- * - Edit item details: name, description, course, price, image URL
- * - Validate all fields before submission
- * - Continue adding or return to menu after submission
- * 
- * ============================================================
- * CODE ATTRIBUTION
- * ============================================================
- */
+﻿/*
+ This screen allows chefs to add new items to the menu.
+ Features:
+- Add multiple items in a single session
+- View and manage existing menu items
+- Edit item details: name, description, course, price, image URL
+- Validate all fields before submission
+- Continue adding or return to menu after submission
+*/
 
 /*
 CODE ATTRIBUTION - Conditional Logic Reference
