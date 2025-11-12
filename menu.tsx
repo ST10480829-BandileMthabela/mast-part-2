@@ -238,7 +238,7 @@ style={styles.image}
 style={styles.addButton}
 onPress={() => navigation.navigate('Filter')}
 >
-<Text style={styles.filterButtonText}>Filter</Text>
+<Text style={styles.filterButtonText}>FILTER</Text>
 </TouchableOpacity>
 
 <TouchableOpacity 

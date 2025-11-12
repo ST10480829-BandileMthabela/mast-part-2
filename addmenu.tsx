@@ -1,6 +1,6 @@
 ﻿/*
- This screen allows chefs to add new items to the menu.
- Features:
+Screen use: allows chefs to add new items to the menu.
+
 - Add multiple items in a single session
 - View and manage existing menu items
 - Edit item details: name, description, course, price, image URL
@@ -59,6 +59,25 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
 import { Picker } from '@react-native-picker/picker';
 import { MenuItem } from './menu';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * FormDataItem Interface
@@ -180,30 +199,7 @@ export default function AddMenu() {
     );
   };
 
-  // Function to add new form row
-  const addNewFormRow = () => {
-    const lastId = parseInt(menuItemsToAdd[menuItemsToAdd.length - 1].tempId);
-    const newId = (lastId + 1).toString();
-    const newItem: FormDataItem = {
-      tempId: newId,
-      name: '',
-      description: '',
-      course: 'main course',
-      price: '',
-      image: '',
-    };
-    setMenuItemsToAdd([...menuItemsToAdd, newItem]);
-  };
 
-  // Function to remove form row
-  const removeFormRow = (tempId: string) => {
-    if (menuItemsToAdd.length === 1) {
-      Alert.alert('Error', 'You must have at least one item to add.');
-      return;
-    }
-    const updatedItems = menuItemsToAdd.filter(item => item.tempId !== tempId);
-    setMenuItemsToAdd(updatedItems);
-  };
 
   // Function to remove existing menu item
   const removeExistingItem = (itemId: string) => {
@@ -242,12 +238,12 @@ export default function AddMenu() {
 
         Alert.alert(
           'Success',
-          menuItemsToAdd.length + ' menu item(s) added successfully!',
+          'Menu item added successfully!',
           [
             {
-              text: 'Add more',
+              text: 'Add another',
               onPress: () => {
-                // Reset the form so chef can add more items without leaving
+                // Reset the form so chef can add another item
                 setMenuItemsToAdd([
                   {
                     tempId: '1',
@@ -284,7 +280,7 @@ export default function AddMenu() {
           { cancelable: false }
         );
       } else {
-        Alert.alert('Error', 'Could not add menu items. Please try again.');
+        Alert.alert('Error', 'Could not add menu item. Please try again.');
       }
     }
   };
@@ -292,20 +288,11 @@ export default function AddMenu() {
   // Function to render menu item form
   const renderMenuItemForm = (item: FormDataItem) => {
     const itemErrors = errors[item.tempId] || {};
-    const itemIndex = menuItemsToAdd.indexOf(item) + 1;
 
     return (
       <View key={item.tempId} style={styles.formCard}>
         <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>Item {itemIndex}</Text>
-          {menuItemsToAdd.length > 1 && (
-            <TouchableOpacity
-              style={styles.deleteButton}
-              onPress={() => removeFormRow(item.tempId)}
-            >
-              <Text style={styles.deleteButtonText}>Remove</Text>
-            </TouchableOpacity>
-          )}
+          <Text style={styles.cardTitle}>New Item</Text>
         </View>
 
         <View style={styles.inputGroup}>
@@ -431,7 +418,7 @@ export default function AddMenu() {
               style={styles.submitButton}
               onPress={handleSubmit}
             >
-              <Text style={styles.submitButtonText}>SUBMIT ALL</Text>
+              <Text style={styles.submitButtonText}>ADD ITEM</Text>
             </TouchableOpacity>
           </View>
 
@@ -458,16 +445,9 @@ export default function AddMenu() {
 
           {/* Section for adding new items */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}> Add New Items</Text>
+            <Text style={styles.sectionTitle}> Add New Item</Text>
             
             {menuItemsToAdd.map(item => renderMenuItemForm(item))}
-
-            <TouchableOpacity
-              style={styles.addMoreButton}
-              onPress={addNewFormRow}
-            >
-              <Text style={styles.addMoreButtonText}>+ ADD NEW ITEM</Text>
-            </TouchableOpacity>
           </View>
 
           {/* Buttons moved to top for easier access */}
