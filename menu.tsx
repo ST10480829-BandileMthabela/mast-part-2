@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   price: { fontSize: 15, fontWeight: 'bold', color: '#2e7d32' },
   removeButton: {
     marginTop: 6,
-    backgroundColor: '#e53935',
+    backgroundColor: '#4d0504ff',
     borderRadius: 6,
     padding: 6,
     alignSelf: 'flex-start',
