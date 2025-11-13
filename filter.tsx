@@ -6,6 +6,51 @@ This screen allows users to filter menu items by course type:
 - Updates in real-time when focus returns to screen (new items appear)
 */
 
+/*CODE ATTRIBUTION*/
+
+/*
+Author: The IIE
+Title: if statement
+Date Published: 2025
+Link: https://theIIE.ac.za 
+Date accessed: 22/10/2025
+*/
+
+/*
+Author: Easy Learning (YouTube)
+Title: 131 - The Picker Component in React Native
+Date Published: 2025
+Link: https://www.youtube.com/watch?v=dSY6HJc7CXE&t=115s
+Date accessed: 22/10/2025
+*/
+
+/*
+Author: React Native Community
+Title: React Native (TextInput and Form Patterns)
+Link: https://reactnative.dev/docs/textinput
+Date accessed: 22/10/2025
+*/
+
+/*
+Author: React Documentation
+Title: Hooks API Reference (useState, useEffect)
+Link: https://react.dev/reference/react
+Date accessed: 22/10/2025
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 CODE ATTRIBUTION - Picker Component Reference
 Author: The IIE

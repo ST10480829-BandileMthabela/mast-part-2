@@ -1,90 +1,35 @@
-﻿/*
-Screen use: allows chefs to add new items to the menu.
-
-- Add multiple items in a single session
-- View and manage existing menu items
-- Edit item details: name, description, course, price, image URL
-- Validate all fields before submission
-- Continue adding or return to menu after submission
-*/
+﻿/*CODE ATTRIBUTION*/
 
 /*
-CODE ATTRIBUTION - Conditional Logic Reference
 Author: The IIE
-Title: Conditional Statements (if statement)
+Title: if statement
 Date Published: 2025
-Link: https://theIIE.ac.za (Educational Institution)
-Date accessed: 2025
+Link: https://theIIE.ac.za 
+Date accessed: 22/10/2025
 */
 
 /*
-CODE ATTRIBUTION - Picker Component Documentation
 Author: Easy Learning (YouTube)
 Title: 131 - The Picker Component in React Native
 Date Published: 2025
-Link: https://www.youtube.com/results?search_query=react+native+picker+component
-Date accessed: 2025
+Link: https://www.youtube.com/watch?v=dSY6HJc7CXE&t=115s
+Date accessed: 22/10/2025
 */
 
 /*
-CODE ATTRIBUTION - React Native Form Handling
 Author: React Native Community
-Title: React Native - TextInput & Form Patterns
+Title: React Native (TextInput and Form Patterns)
 Link: https://reactnative.dev/docs/textinput
-Date accessed: 2025
+Date accessed: 22/10/2025
 */
 
 /*
-CODE ATTRIBUTION - React Hooks Reference
 Author: React Documentation
-Title: Hooks API Reference - useState, useEffect
+Title: Hooks API Reference (useState, useEffect)
 Link: https://react.dev/reference/react
-Date accessed: 2025
+Date accessed: 22/10/2025
 */
 
-/*
-Screen use: allows chefs to add new items to the menu.
-
-- Add multiple items in a single session
-- View and manage existing menu items
-- Edit item details: name, description, course, price, image URL
-- Validate all fields before submission
-- Continue adding or return to menu after submission
-*/
-
-/*
-CODE ATTRIBUTION - Conditional Logic Reference
-Author: The IIE
-Title: Conditional Statements (if statement)
-Date Published: 2025
-Link: https://theIIE.ac.za (Educational Institution)
-Date accessed: 2025
-*/
-
-/*
-CODE ATTRIBUTION - Picker Component Documentation
-Author: Easy Learning (YouTube)
-Title: 131 - The Picker Component in React Native
-Date Published: 2025
-Link: https://www.youtube.com/results?search_query=react+native+picker+component
-Date accessed: 2025
-*/
-
-/*
-CODE ATTRIBUTION - React Native Form Handling
-Author: React Native Community
-Title: React Native - TextInput & Form Patterns
-Link: https://reactnative.dev/docs/textinput
-Date accessed: 2025
-*/
-
-/*
-CODE ATTRIBUTION - React Hooks Reference
-Author: React Documentation
-Title: Hooks API Reference - useState, useEffect
-Link: https://react.dev/reference/react
-Date accessed: 2025
-*/
 
 import React, { useState, useEffect } from 'react';
 import {
