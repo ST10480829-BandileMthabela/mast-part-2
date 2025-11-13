@@ -309,7 +309,7 @@ export default function AddMenu() {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Submit All Items</Text>
+          <Text style={styles.submitButtonText}>Add To Menu</Text>
         </TouchableOpacity>
 
         {showExisting && (
