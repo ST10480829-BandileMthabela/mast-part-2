@@ -1,6 +1,7 @@
 # Change Log/ Lecturer feedback
 
 | No. | Feedback from part 2 | Changes | Date |
+| --- | --- | --- | --- |
 | 1. | Only 2 items can be added | Changed useState and array | 10/11/2025 |
 | 2. | Add Audio to video | POE Part 3 video has audio | 13/11/2025 |
 | 3. | Cannot remove menu items | Added remove button for each item in the menu screen | 12/11/2025 |
