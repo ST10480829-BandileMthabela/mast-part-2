@@ -55,10 +55,20 @@ import {
   Platform,
   Image
 } from 'react-native';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+  import { useNavigation, useRoute, NavigationProp, RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
 import { Picker } from '@react-native-picker/picker';
-import { MenuItem } from './menu';
+  import { MenuItem, getGlobalMenuItems } from './menu';
+
+  // Temporary form item structure used in this screen
+  interface FormDataItem {
+    tempId: string;
+    name: string;
+    description: string;
+    course: string;
+    price: string;
+    image: string;
+  }
 // global variable requirement
 let globalFormItems: FormDataItem[] = [];
 
@@ -182,7 +192,7 @@ export default function AddMenu() {
           setMenuItemsToAdd([{ tempId: '1', name: '', description: '', course: 'Main Course', price: '', image: '' }]);
           setErrors({});
           globalFormItems = [];
-          navigation.navigate('Menu'); // ✅ fixed: no params reset
+          navigation.navigate('Menu', {});
         },
       },
     ]);
@@ -284,9 +294,10 @@ export default function AddMenu() {
   );
 }
 const styles = StyleSheet.create({
+  // Match Menu screen palette and spacing for a consistent UX
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5'
+    backgroundColor: '#f9f9fb'
   },
   scrollView: {
     flex: 1
@@ -296,32 +307,37 @@ const styles = StyleSheet.create({
     paddingBottom: 40
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '700',
-    marginBottom: 20,
-    color: '#333'
+    marginBottom: 12,
+    color: '#1a1a1e'
   },
   section: {
-    marginBottom: 20,
+    marginBottom: 16,
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#e0e0e0'
+    borderColor: '#f0f0f4'
   },
   sectionHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff',
     borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0'
+    borderBottomColor: '#e8e8ec'
   },
   sectionTitle: {
     fontSize: 16,
-    fontWeight: '600',
-    color: '#333'
+    fontWeight: '700',
+    color: '#1a1a1e'
+  },
+  sectionSubtitle: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 4
   },
   toggleIcon: {
     fontSize: 14,
@@ -332,16 +348,21 @@ const styles = StyleSheet.create({
   },
   existingItemCard: {
     backgroundColor: '#fff',
-    borderRadius: 8,
+    borderRadius: 12,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#e0e0e0',
-    overflow: 'hidden'
+    borderColor: '#f0f0f4',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 3
   },
   existingItemImage: {
     width: '100%',
-    height: 120,
-    backgroundColor: '#e0e0e0'
+    height: 140,
+    backgroundColor: '#e8e8ec'
   },
   existingItemContent: {
     padding: 12
@@ -353,87 +374,136 @@ const styles = StyleSheet.create({
     marginBottom: 8
   },
   existingItemName: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#333',
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1a1a1e',
     marginBottom: 4
   },
   existingItemCourse: {
     fontSize: 12,
-    color: '#666',
+    color: '#888',
     fontStyle: 'italic'
   },
   existingItemPrice: {
     fontSize: 15,
     fontWeight: '700',
-    color: '#007AFF'
+    color: '#1f6a8c'
   },
   existingItemDescription: {
-    fontSize: 12,
-    color: '#666',
+    fontSize: 13,
+    color: '#555',
     marginBottom: 10,
-    lineHeight: 16
+    lineHeight: 18
   },
   removeExistingButton: {
     backgroundColor: '#ff3b30',
     paddingVertical: 8,
     paddingHorizontal: 12,
-    borderRadius: 6,
+    borderRadius: 8,
     alignItems: 'center'
   },
   removeExistingButtonText: {
     color: '#fff',
     fontSize: 12,
-    fontWeight: '600'
+    fontWeight: '700'
   },
   formCard: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff',
     borderWidth: 1,
-    borderColor: '#e0e0e0',
-    borderRadius: 8,
-    padding: 14,
-    marginBottom: 14
+    borderColor: '#f0f0f4',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: '#1f6a8c',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 6,
+    elevation: 3
   },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 14,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0'
+    marginBottom: 12
   },
   cardTitle: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: '#333'
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#1a1a1e'
   },
-  deleteButton: {
-    backgroundColor: '#ff3b30',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 4
+  // Aliases / compatibility styles used by older code paths
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: '#f0f0f4',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 3 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 3
   },
-  deleteButtonText: {
+  error: {
+    color: '#ff3b30',
+    fontSize: 12,
+    marginTop: 6
+  },
+  previewImage: {
+    width: '100%',
+    height: 140,
+    borderRadius: 12,
+    marginTop: 10,
+    backgroundColor: '#e8e8ec'
+  },
+  addButton: {
+    backgroundColor: '#1f6a8c',
+    borderRadius: 10,
+    padding: 14,
+    alignItems: 'center',
+    marginTop: 12
+  },
+  addButtonText: {
     color: '#fff',
-    fontSize: 11,
-    fontWeight: '600'
+    fontSize: 15,
+    fontWeight: '700'
+  },
+  toggleButton: {
+    marginTop: 16,
+    padding: 10,
+    alignItems: 'center'
+  },
+  toggleButtonText: {
+    color: '#1f6a8c',
+    fontSize: 14,
+    fontWeight: '700'
+  },
+  existingImage: {
+    width: '100%',
+    height: 120,
+    backgroundColor: '#e8e8ec'
+  },
+  existingText: {
+    fontSize: 14,
+    color: '#333',
+    marginTop: 6
   },
   inputGroup: {
     marginBottom: 12
   },
   label: {
     fontSize: 13,
-    fontWeight: '500',
-    marginBottom: 5,
+    fontWeight: '600',
+    marginBottom: 6,
     color: '#333'
   },
   input: {
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 6,
-    padding: 10,
-    fontSize: 13,
+    borderColor: '#e8e8ec',
+    borderRadius: 10,
+    padding: 12,
+    fontSize: 14,
     backgroundColor: '#fff'
   },
   inputError: {
@@ -441,74 +511,55 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: '#ff3b30',
-    fontSize: 11,
-    marginTop: 3
+    fontSize: 12,
+    marginTop: 6
   },
   textArea: {
-    height: 70,
+    height: 90,
     textAlignVertical: 'top'
   },
   pickerContainer: {
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 6,
+    borderColor: '#e8e8ec',
+    borderRadius: 10,
     overflow: 'hidden',
     backgroundColor: '#fff'
-  },
-  addMoreButton: {
-    backgroundColor: '#007AFF',
-    borderRadius: 6,
-    padding: 12,
-    alignItems: 'center',
-    marginTop: 12
-  },
-  addMoreButtonText: {
-    color: '#fff',
-    textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '600'
-  },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    // gap not supported consistently; spacing handled with margins
-    gap: 10,
-    marginTop: 20
   },
   topButtonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
-    gap: 10
+    marginBottom: 12
   },
   submitButton: {
-    backgroundColor: '#4d9418',
-    borderRadius: 6,
-    padding: 13,
-    flex: 1
+    backgroundColor: '#1f6a8c',
+    borderRadius: 10,
+    padding: 14,
+    flex: 1,
+    marginLeft: 8
   },
   submitButtonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '600'
+    fontSize: 15,
+    fontWeight: '700'
   },
   cancelButton: {
     backgroundColor: '#fff',
-    borderRadius: 6,
-    padding: 13,
+    borderRadius: 10,
+    padding: 14,
     flex: 1,
     borderWidth: 1,
-    borderColor: '#ff0000'
+    borderColor: '#1f6a8c',
+    marginRight: 8
   },
   cancelButtonText: {
-    color: '#ff0000',
+    color: '#1f6a8c',
     textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '600'
+    fontSize: 15,
+    fontWeight: '700'
   },
   bottomSpacing: {
-    height: 20
+    height: 120
   }
 });
