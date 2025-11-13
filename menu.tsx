@@ -116,7 +116,7 @@ const INITIAL_DISHES: MenuItem[] = [
     description: 'Rich chocolate cake with fudge frosting',
     course: 'Dessert',
     price: 55.5,
-    image: 'https://images.unsplash.com/photo-1606312619070-5b2f3c4b6f20?auto=format&fit=crop&q=80&w=687',
+    image: 'https://images.unsplash.com/photo-1711043484522-ad01c2bd769b?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
   {
     id: '5',
@@ -124,7 +124,7 @@ const INITIAL_DISHES: MenuItem[] = [
     description: 'Tender grilled fish served with lemon butter sauce',
     course: 'Main Course',
     price: 95.0,
-    image: 'https://images.unsplash.com/photo-1588167056547-c183313da7bd?auto=format&fit=crop&q=80&w=687',
+    image: 'https://images.unsplash.com/photo-1600699899970-b1c9fadd8f9e?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
   },
 ];
 
