@@ -164,6 +164,16 @@ export default function Filter() {
       <View style={styles.header}>
         <Text style={styles.headerTitle}>Filter Menu</Text>
         <Text style={styles.headerSubtitle}>Select a course to filter</Text>
+
+        {/* Top navigation button moved here from bottom navBar */}
+        <View style={styles.topActions}>
+          <TouchableOpacity
+            style={styles.navButton}
+            onPress={() => navigation.navigate('Menu', {})}
+          >
+            <Text style={styles.navButtonText}>Back to Menu</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       <View style={styles.pickerSection}>
@@ -208,14 +218,7 @@ export default function Filter() {
         )}
       </ScrollView>
 
-      <View style={styles.navBar}>
-        <TouchableOpacity
-          style={styles.navButton}
-          onPress={() => navigation.navigate('Menu', {})}
-        >
-          <Text style={styles.navButtonText}>Back to Menu</Text>
-        </TouchableOpacity>
-      </View>
+      {/* bottom nav removed - primary action placed at top for consistency */}
     </View>
   );
 }
@@ -373,5 +376,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
     fontWeight: '600'
+  }
+  ,
+  topActions: {
+    marginTop: 12,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    justifyContent: 'flex-end'
   }
 });

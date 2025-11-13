@@ -56,15 +56,14 @@ Link: https://reactnative.dev/docs/getting-started
 Date accessed: 2025
 */
 
-import React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { 
+import React, { useState, useEffect } from 'react';
+import {
   StyleSheet,
-  Text, 
-  View, 
-  Image, 
-  ScrollView, 
-  TouchableOpacity 
+  Text,
+  View,
+  Image,
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
@@ -74,18 +73,17 @@ import { RootStackParamList } from './App';
  * Defines the structure of each menu item
  */
 export interface MenuItem {
-  id: string;                // Unique identifier (generated with counter for unlimited items)
-  name: string;              // Dish name
-  description: string;       // Dish description
-  course: string;            // Course type: 'Appetiser', 'Main Course', 'Dessert'
-  price: number;             // Price in Rand (R)
-  image: string;             // URL to dish image
+  id: string;
+  name: string;
+  description: string;
+  course: string;
+  price: number;
+  image: string;
 }
 
 /**
  * INITIAL_DISHES
  * Default menu items loaded when the app starts.
- * These 5 dishes are used as seed data.
  */
 const INITIAL_DISHES: MenuItem[] = [
   {
@@ -93,8 +91,8 @@ const INITIAL_DISHES: MenuItem[] = [
     name: 'Creamy Pancakes',
     description: 'Fluffy pancakes topped with whipped cream and fresh berries',
     course: 'Dessert',
-    price: 70.00,
-    image: 'https://images.unsplash.com/photo-1670639596808-11aa57e22904?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687',
+    price: 70.0,
+    image: 'https://images.unsplash.com/photo-1670639596808-11aa57e22904?auto=format&fit=crop&q=80&w=687',
   },
   {
     id: '2',
@@ -102,192 +100,186 @@ const INITIAL_DISHES: MenuItem[] = [
     description: 'Delicious cheese pizza with pepperoni and a crispy crust',
     course: 'Main Course',
     price: 79.99,
-    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
+    image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&q=80&w=1170',
   },
   {
     id: '3',
     name: 'French Fries',
     description: 'Salted fries served with tomato sauce',
     course: 'Appetiser',
-    price: 25.00,
-    image: 'https://images.unsplash.com/photo-1518013431117-eb1465fa5752?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZnJpZXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&q=60&w=600',
+    price: 25.0,
+    image: 'https://images.unsplash.com/photo-1518013431117-eb1465fa5752?auto=format&fit=crop&q=80&w=600',
   },
   {
     id: '4',
     name: 'Chocolate Cake',
-    description: 'Rich chocolate cake with creamy frosting and decorative toppings',
+    description: 'Rich chocolate cake with fudge frosting',
     course: 'Dessert',
-    price: 90.00,
-    image: 'https://images.unsplash.com/photo-1646678257756-a56adbd0d8f8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1170',
+    price: 55.5,
+    image: 'https://images.unsplash.com/photo-1606312619070-5b2f3c4b6f20?auto=format&fit=crop&q=80&w=687',
   },
   {
     id: '5',
     name: 'Grilled Fish',
-    description: 'Fresh grilled fish served with lemon and aromatic herbs',
+    description: 'Tender grilled fish served with lemon butter sauce',
     course: 'Main Course',
-    price: 230.00,
-    image: 'https://images.unsplash.com/photo-1580959375944-abd7e991f971?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=1976',
+    price: 95.0,
+    image: 'https://images.unsplash.com/photo-1588167056547-c183313da7bd?auto=format&fit=crop&q=80&w=687',
   },
 ];
 
-/**
- * Global State Management
- */
+/** ---------- GLOBAL STATE ---------- */
+let globalMenuItems: MenuItem[] = [...INITIAL_DISHES];
 
-// Global variable to manage menu items across screens
-let globalMenuItems: MenuItem[] = INITIAL_DISHES;
+/** Exported functions to allow global access */
+export const getGlobalMenuItems = () => globalMenuItems;
 
-/**
- * Global ID Counter
- * Used to generate unique IDs for unlimited menu items.
- * Incrementing counter ensures no ID collisions even after removals.
- */
-let menuIdCounter: number = INITIAL_DISHES.length;
+export const addGlobalMenuItem = (item: Omit<MenuItem, 'id'>) => {
+  const newItem: MenuItem = { ...item, id: String(Date.now()) };
+  globalMenuItems.push(newItem);
+  return newItem;
+};
 
-/**
- * getNextMenuId()
- * Generates the next unique menu item ID using a counter.
- * This approach supports unlimited items without conflicts.
- */
-function getNextMenuId(): string {
-  menuIdCounter++;
-  return menuIdCounter.toString();
-}
+export const removeGlobalMenuItem = (itemId: string) => {
+  globalMenuItems = globalMenuItems.filter(item => item.id !== itemId);
+};
 
-/**
- * getGlobalMenuItems()
- * Getter function to export current menu items.
- * Used as fallback in Filter screen when navigation params unavailable.
- */
-export function getGlobalMenuItems(): MenuItem[] {
-	return globalMenuItems;
-}
-
-/**
- * Menu Screen Component
- * Main display screen showing all menu items with filtering and add/remove navigation.
- */
+/** ---------- MENU COMPONENT ---------- */
 export default function Menu() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const [menuItems, setMenuItems] = React.useState<MenuItem[]>(INITIAL_DISHES);
+  const [menuItems, setMenuItems] = useState<MenuItem[]>(getGlobalMenuItems());
 
-  /**
-   * addMenuItem - Callback for AddMenu screen
-   * Adds a new item to the menu with a generated unique ID.
-   * Updates both state and global variable for cross-screen access.
-   * FOR LOOP concept: iterates through items when filtering/updating
-   */
-  const addMenuItem = React.useCallback((newItem: Omit<MenuItem, 'id'>) => {
-    const id = getNextMenuId();
-    const updatedItems = [...menuItems, { ...newItem, id }];
-    setMenuItems(updatedItems);
-    globalMenuItems = updatedItems;
-  }, [menuItems]);
+  // Sync global state updates with screen
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      setMenuItems(getGlobalMenuItems());
+    });
+    return unsubscribe;
+  }, [navigation]);
 
-  /**
-   * removeMenuItem - Callback for AddMenu screen
-   * Removes an item from the menu by ID.
-   * FILTER/MAP concept: uses array filter to exclude target item
-   */
-  const removeMenuItem = React.useCallback((itemId: string) => {
-    const updatedItems = menuItems.filter(item => item.id !== itemId);
-    setMenuItems(updatedItems);
-    globalMenuItems = updatedItems;
-  }, [menuItems]);
+  /** Add new item (used by AddMenu screen) */
+  const addMenuItem = (item: {
+    name: string;
+    description: string;
+    course: string;
+    price: number;
+    image: string;
+  }) => {
+    addGlobalMenuItem(item);
+    setMenuItems([...getGlobalMenuItems()]);
+  };
 
-// Function to get all menu items
-const getMenuItems = React.useCallback((): MenuItem[] => {
-return menuItems;
-}, [menuItems]);
+  /** Remove an item by ID */
+  const removeMenuItem = (itemId: string) => {
+    removeGlobalMenuItem(itemId);
+    setMenuItems([...getGlobalMenuItems()]);
+  };
 
-React.useEffect(() => {
-navigation.setParams({ addMenuItem, removeMenuItem, getMenuItems });
-}, [navigation, addMenuItem, removeMenuItem, getMenuItems]);
+  /** Getter for other screens */
+  const getMenuItems = () => getGlobalMenuItems();
 
-return (
-<View style={styles.mainContainer}>
-<ScrollView style={styles.container}>
-<View style={styles.header}>
-<View>
-<Text style={styles.headerText}>Menu</Text>
-<Text style={styles.itemCount}>{menuItems.length} items</Text>
-</View>
-</View>
+  /** Attach helper functions to navigation params */
+  useEffect(() => {
+    navigation.setParams({ addMenuItem, removeMenuItem, getMenuItems });
+  }, [navigation, menuItems]);
 
-{menuItems.map((dish) => (
-<TouchableOpacity key={dish.id} style={styles.card}>
-<Image
-source={{ uri: dish.image }}
-style={styles.image}
-/>
-<View style={styles.cardContent}>
-<View style={styles.titleRow}>
-<Text style={styles.name}>{dish.name}</Text>
-<Text style={styles.price}>R{dish.price.toFixed(2)}</Text>
-</View>
-<Text style={styles.course}>{dish.course}</Text>
-<Text style={styles.description}>{dish.description}</Text>
-</View>
-</TouchableOpacity>
-))}
-<View style={styles.bottomSpacing} />
-</ScrollView>
+  return (
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>Our Menu</Text>
+       <View style={styles.topActions}>
+    <TouchableOpacity 
+      style={styles.actionSmall}
+      onPress={() => navigation.navigate('Filter')}
+    >
+      <Text style={styles.filterButtonText}>FILTER</Text>
+    </TouchableOpacity>
 
-<View style={styles.navBar}>
-<TouchableOpacity 
-style={styles.addButton}
-onPress={() => navigation.navigate('Filter')}
->
-<Text style={styles.filterButtonText}>FILTER</Text>
-</TouchableOpacity>
+    <TouchableOpacity 
+      style={styles.actionAdd}
+      onPress={() => navigation.navigate('AddMenu')}
+    >
+      <Image source={require('./image_assets/blueaddicon.jpg')} style={styles.addButtonIcon} />
+    </TouchableOpacity>
+  </View>
 
-<TouchableOpacity 
-style={styles.addButton}
-onPress={() => navigation.navigate('AddMenu')}
->
-<Image source={require('./image_assets/blueaddicon.jpg')} style={styles.addButtonIcon} />
-</TouchableOpacity>
-</View>
-<StatusBar style="auto" />
-</View>
-);
+      {menuItems.length === 0 ? (
+        <Text style={styles.emptyText}>No dishes available. Please add some!</Text>
+      ) : (
+        menuItems.map(item => (
+          <View key={item.id} style={styles.card}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <View style={styles.cardContent}>
+              <Text style={styles.name}>{item.name}</Text>
+              <Text style={styles.course}>{item.course}</Text>
+              <Text style={styles.desc}>{item.description}</Text>
+              <Text style={styles.price}>R{item.price.toFixed(2)}</Text>
+              <TouchableOpacity
+                style={styles.removeButton}
+                onPress={() => removeMenuItem(item.id)}
+              >
+                <Text style={styles.removeButtonText}>Remove</Text>
+              </TouchableOpacity>
+
+              
+            </View>
+
+          </View>
+          
+        ))
+      )}
+
+
+
+
+
+
+
+     
+
+
+
+
+
+
+    </ScrollView>
+  );
 }
 
+/** ---------- STYLES ---------- */
 const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: '#f9f9fb',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#f9f9fb'
-  },
-  // Navigation bar with two action buttons (Filter + Add)
-  navBar: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 90,
-    backgroundColor: '#fff',
-    borderTopWidth: 2,
-    borderTopColor: '#e8e8ec',
+  container: { flex: 1, backgroundColor: '#fff', padding: 16 },
+  title: { fontSize: 26, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 },
+  card: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-    paddingHorizontal: 50,
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: -2,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    backgroundColor: '#f9f9f9',
+    borderRadius: 12,
+    marginBottom: 12,
+    overflow: 'hidden',
+    elevation: 2,
   },
-  bottomSpacing: {
-    height: 120,
+  image: { width: 120, height: 120 },
+  cardContent: { flex: 1, padding: 10 },
+  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 4 },
+  course: { fontSize: 14, fontStyle: 'italic', color: '#666' },
+  desc: { fontSize: 13, color: '#444', marginVertical: 4 },
+  price: { fontSize: 15, fontWeight: 'bold', color: '#2e7d32' },
+  removeButton: {
+    marginTop: 6,
+    backgroundColor: '#e53935',
+    borderRadius: 6,
+    padding: 6,
+    alignSelf: 'flex-start',
   },
+  removeButtonText: { color: '#fff', fontWeight: 'bold' },
+  bottomButtons: { marginTop: 20, alignItems: 'center' },
+  filterButton: {
+    backgroundColor: '#2196F3',
+    padding: 12,
+    borderRadius: 10,
+    width: '80%',
+  },
+  buttonText: { color: '#fff', textAlign: 'center', fontWeight: 'bold' },
+  emptyText: { textAlign: 'center', marginTop: 30, fontSize: 16, color: '#777' },
   addButtonIcon: {
     width: 70,
     height: 70,
@@ -298,18 +290,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '600'
   },
-  // Header section with title and item count
-  header: {
-    padding: 20,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#e8e8ec',
-    marginBottom: 8,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  // Action buttons: Filter + Add
   addButton: {
     backgroundColor: '#1f6a8c',
     width: 70,
@@ -331,80 +311,28 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600'
   },
-  headerText: {
-    fontSize: 26,
-    fontWeight: '700',
-    color: '#1a1a1e',
-    marginBottom: 4
-  },
-  itemCount: {
-    fontSize: 14,
-    color: '#888',
-    fontWeight: '500'
-  },
-  // Individual menu item card with image and details
-  card: {
-    backgroundColor: '#fff',
-    borderRadius: 16,
-    marginHorizontal: 16,
-    marginBottom: 16,
-    shadowColor: '#1f6a8c',
-    shadowOffset: {
-      width: 0,
-      height: 4
-    },
-    shadowOpacity: 0.12,
-    shadowRadius: 6,
-    elevation: 4,
-    overflow: 'hidden',
-    borderWidth: 1,
-    borderColor: '#f0f0f4'
-  },
-  // Card image
-  image: {
-    width: '100%',
-    height: 200,
-    borderTopLeftRadius: 16,
-    borderTopRightRadius: 16,
-    backgroundColor: '#e8e8ec'
-  },
-  // Card content padding
-  cardContent: {
-    padding: 16
-  },
-  // Title and price row
-  titleRow: {
+  topActions: {
+    marginTop: 12,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginBottom: 8
+    gap: 12,
+    paddingRight: 16
   },
-  // Dish name
-  name: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1a1a1e',
-    flex: 1
+  actionSmall: {
+    backgroundColor: '#1f6a8c',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  // Price display
-  price: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#1f6a8c',
-    marginLeft: 12
+  actionAdd: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#1f6a8c',
+    justifyContent: 'center',
+    alignItems: 'center'
   },
-  // Course type
-  course: {
-    fontSize: 12,
-    color: '#888',
-    marginBottom: 8,
-    fontStyle: 'italic',
-    fontWeight: '500'
-  },
-  // Description text
-  description: {
-    fontSize: 14,
-    color: '#555',
-    lineHeight: 20
-  }
 });
