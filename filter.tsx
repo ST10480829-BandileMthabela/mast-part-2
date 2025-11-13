@@ -1,10 +1,3 @@
-/*
-This screen allows users to filter menu items by course type:
-
-- Appetiser, Main Course, Dessert, or All Items
-- Displays filtered results with image, name, price, course, description
-- Updates in real-time when focus returns to screen (new items appear)
-*/
 
 /*CODE ATTRIBUTION*/
 
@@ -17,7 +10,35 @@ Date accessed: 22/10/2025
 */
 
 /*
-Author: Easy Learning (YouTube)
+CODE ATTRIBUTION 
+Author: Net Ninja
+Title: TypeScript Tutorial #4 - Objects & Arrays
+Date Published: 2020
+Link: https://www.youtube.com/watch?v=157NopQ-chU
+Date accessed: 13/11/2025
+*/
+
+/*
+CODE ATTRIBUTION 
+Author: Code Garden
+Title: 6 NEW ES2023 Array Methods with React + TypeScript Examples
+Date Published: 2023
+Link: https://www.youtube.com/watch?v=_4M46HRHoIw
+Date accessed: 13/11/2025
+*/
+
+
+/*
+CODE ATTRIBUTION 
+Author: Moreality
+Title: Touchable Opacity Made Easy with React Native [In 9 Minutes] - 2022
+Date Published: 2022
+Link: https://www.youtube.com/watch?v=XeSxz_6vS04
+Date accessed: 13/11/2025
+*/
+
+/*
+Author: Easy Learning 
 Title: 131 - The Picker Component in React Native
 Date Published: 2025
 Link: https://www.youtube.com/watch?v=dSY6HJc7CXE&t=115s
@@ -25,34 +46,7 @@ Date accessed: 22/10/2025
 */
 
 /*
-Author: React Native Community
-Title: React Native (TextInput and Form Patterns)
-Link: https://reactnative.dev/docs/textinput
-Date accessed: 22/10/2025
-*/
-
-/*
-Author: React Documentation
-Title: Hooks API Reference (useState, useEffect)
-Link: https://react.dev/reference/react
-Date accessed: 22/10/2025
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-CODE ATTRIBUTION - Picker Component Reference
+CODE ATTRIBUTION 
 Author: The IIE
 Title: Picker Component for Filtering and Selection
 Date Published: 2025
@@ -61,20 +55,21 @@ Date accessed: 2025
 */
 
 /*
-CODE ATTRIBUTION - React Native Picker Documentation
-Author: React Native Community
-Title: @react-native-picker/picker - Picker Component API
-Link: https://github.com/react-native-picker/picker
-Date accessed: 2025
+CODE ATTRIBUTION 
+Author: Venom Kage
+Title: How to use “useFocusEffect” hook in react native
+Date Published: 2023
+Link: https://www.youtube.com/watch?v=5oSIifNdckw&embeds_referring_euri=https%3A%2F%2Fchatgpt.com%2F&source_ve_path=Mjg2NjY
+Date accessed: 13/11/2025
 */
 
-/*
-CODE ATTRIBUTION - React Navigation Focus Listener
-Author: React Navigation Community
-Title: React Navigation - useFocusEffect and focus listener pattern
-Link: https://reactnavigation.org/docs/navigation-lifecycle/
-Date accessed: 2025
-*/
+/*new screen
+
+1. has a picker
+2. uses a while loop to filter items based on course.
+3. Uses a for-in loop to show picker items.
+*/ 
+
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -94,12 +89,7 @@ import { MenuItem, getGlobalMenuItems } from './menu';
 // Global variable to store all menu items for this screen
 let globalMenuItems: MenuItem[] = [];
 
-/*
- Filter Component
- Provides course-based filtering and displays filtered menu items
- WHILE LOOP: used in getFilteredItems() to filter items by course
- FOR-IN LOOP concept: map() iterates courseOptions array
- */
+
 export default function Filter() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   
@@ -108,11 +98,6 @@ export default function Filter() {
   // State for all menu items
   const [allMenuItems, setAllMenuItems] = useState<MenuItem[]>([]);
 
-  /*
-    Initialize Filter - Load Menu Items
-    Fetches menu items on component mount
-    Uses fallback getter if navigation params unavailable
-*/
   useEffect(() => {
     const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
     const getMenuItems = menuRoute?.params?.getMenuItems;
@@ -122,18 +107,14 @@ export default function Filter() {
       setAllMenuItems(items);
       globalMenuItems = items;
     } else {
-      // fallback to shared getter in case params were not set
+      
       const items = getGlobalMenuItems();
       setAllMenuItems(items);
       globalMenuItems = items;
     }
   }, [navigation]);
 
-  /*
-   * Refresh on Focus
-   * Reloads menu items when user returns to Filter screen
-   * Ensures newly added items appear without restart
-   */
+  //new items are visable
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
@@ -152,14 +133,14 @@ export default function Filter() {
     return unsubscribe;
   }, [navigation]);
 
-  // Function to get filtered items based on course
+  // Function filters items based on course they are
   const getFilteredItems = (course: string): MenuItem[] => {
-    // FOR-IN loop to iterate through items
+    // going through items
     if (course === 'all') {
       return allMenuItems;
     }
     
-    // WHILE LOOP to filter items by course
+    // Filter items by course.
     let filteredItems: MenuItem[] = [];
     let index = 0;
     while (index < allMenuItems.length) {
@@ -172,10 +153,9 @@ export default function Filter() {
     return filteredItems;
   };
 
-  // Get filtered items based on selected course
+  // Get filtered items based on selected course.
   const filteredItems = getFilteredItems(selectedCourse);
 
-  // Function to render each menu item card
   const renderMenuItemCard = (item: MenuItem) => {
     return (
       <TouchableOpacity key={item.id} style={styles.card}>
@@ -195,7 +175,7 @@ export default function Filter() {
     );
   };
 
-  // FOR loop to build course options
+  // For loop to display course options.
   const courseOptions = ['all', 'appetiser', 'main course', 'dessert'];
   const courseLabels: {[key: string]: string} = {
     'all': 'All Courses',
@@ -255,7 +235,7 @@ export default function Filter() {
         )}
       </ScrollView>
 
-      {/* bottom nav removed - primary action placed at top for consistency */}
+      
     </View>
   );
 }

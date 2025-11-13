@@ -45,6 +45,24 @@ Link/Accessed at:https://advtechonline.sharepoint.com/:w:/r/sites/TertiaryStuden
 Date accessed:22/10/2025
 */
 
+/*
+CODE ATTRIBUTION 
+Author: Moreality
+Title: Touchable Opacity Made Easy with React Native [In 9 Minutes] - 2022
+Date Published: 2022
+Link: https://www.youtube.com/watch?v=XeSxz_6vS04
+Date accessed: 13/11/2025
+*/
+
+/*Notable changes Made for The POE part 3. The Splash screen(App.tsx)
+
+1. Removed menu button 
+2. Changed ddescription text to tell the user to tap on the image.
+3. Title change to Christoffel's Private Chef menu.
+4. I removed the stling for the button. 
+5. I increased the images size (height and witdth) so it is easier to tap.
+*/ 
+
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { 
@@ -100,7 +118,7 @@ style={styles.mainImage}/>
 );
 }
 
-// apple navigation (Top of the screen.)
+// Stack navigation for all screens to enable users to be able to go to each screen of the app.
 const Stack = createNativeStackNavigator<RootStackParamList>();
 export default function App() {
 return (
@@ -139,28 +157,6 @@ height: 500,
 borderRadius: 10,
 marginBottom: 20,
 },
-menuButton: {
 
-flexDirection: 'column',
-alignItems: 'center',
-backgroundColor: '#1f6a8c',
-borderRadius: 1,
-marginTop: 2,
-padding: 10,
-shadowColor: '#000000ff',
-shadowOffset: {
-width: 0,
-height: 2,
-},
-shadowOpacity: 0.25,
-shadowRadius: 3.84,
-elevation: 5,
-},
-
-buttonText: {
-color: '#ffffff',
-fontSize: 16,
-fontWeight: '600',
-}
 });
 

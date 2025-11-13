@@ -1,11 +1,6 @@
-/*
- This screen displays all menu items added by chefs and provides
- navigation to Filter and Add Menu screens. Users can view dishes
- with images, descriptions, prices, and course types.
-*/
 
 /*
-CODE ATTRIBUTION - Pizza Image
+CODE ATTRIBUTION
 Author: Ivan Torres
 Title: pizza with berries
 Date Published: 2017
@@ -14,7 +9,7 @@ Date accessed: 22/10/2025
 */
 
 /*
-CODE ATTRIBUTION - Fries Image
+CODE ATTRIBUTION 
 Author: Pixzolo Photography
 Title: fries and ketchup
 Date Published: 2018
@@ -23,7 +18,7 @@ Date accessed: 22/10/2025
 */
 
 /*
-CODE ATTRIBUTION - Cake Image
+CODE ATTRIBUTION 
 Author: Nahima Aparicio
 Title: a piece of cake with fruit on top
 Date Published: 2022
@@ -32,7 +27,7 @@ Date accessed: 22/10/2025
 */
 
 /*
-CODE ATTRIBUTION - Fish Image
+CODE ATTRIBUTION
 Author: Jennifer Burk
 Title: a white plate topped with a piece of fish
 Date Published: 2020
@@ -41,20 +36,59 @@ Date accessed: 22/10/2025
 */
 
 /*
-CODE ATTRIBUTION - React Navigation Reference
+CODE ATTRIBUTION 
 Author: Codevolution
 Title: React Native Tutorial - 74 - Navigation between Screens
 Date Published: 2023
 Link: https://www.youtube.com/watch?v=HuwQwNDLaJ8
 Date accessed: 21/10/2025
 */
+/*
+CODE ATTRIBUTION 
+Author: Net Ninja
+Title: TypeScript Tutorial #4 - Objects & Arrays
+Date Published: 2020
+Link: https://www.youtube.com/watch?v=157NopQ-chU
+Date accessed: 13/11/2025
+*/
 
 /*
-CODE ATTRIBUTION - React Native Documentation
-Title: React Native - Core Components and APIs
-Link: https://reactnative.dev/docs/getting-started
-Date accessed: 2025
+CODE ATTRIBUTION 
+Author: Code Garden
+Title: 6 NEW ES2023 Array Methods with React + TypeScript Examples
+Date Published: 2023
+Link: https://www.youtube.com/watch?v=_4M46HRHoIw
+Date accessed: 13/11/2025
 */
+
+/*
+CODE ATTRIBUTION 
+Author: ShortBear
+Title: Codewars - Typescript - Calculate average
+Date Published: 2023
+Link: https://www.youtube.com/watch?v=09g2czyEwpQ
+Date accessed: 13/11/2025
+*/
+
+
+/*
+CODE ATTRIBUTION 
+Author: Moreality
+Title: Touchable Opacity Made Easy with React Native [In 9 Minutes] - 2022
+Date Published: 2022
+Link: https://www.youtube.com/watch?v=XeSxz_6vS04
+Date accessed: 13/11/2025
+*/
+
+/*Notable changes Made for The POE part 3. The Splash screen(App.tsx)
+
+1. users can remove items
+2. filtter screen button
+3. styling, i changed the original design form part 1. reason being, the icons I made for the navigation are a problem for android devices.
+4. Redesigned the total items number at the top of the screen.
+5. added average price calculation for each course. 
+*/ 
+
 
 import React, { useState, useEffect } from 'react';
 import {
@@ -68,9 +102,8 @@ import {
 import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
 
-/**
- * MenuItem Interface
- * Defines the structure of each menu item
+/*
+ Defineing the structure of each menu item
  */
 export interface MenuItem {
   id: string;
@@ -81,10 +114,8 @@ export interface MenuItem {
   image: string;
 }
 
-/**
- * INITIAL_DISHES
- * Default menu items loaded when the app starts.
- */
+
+ //INITIAL_DISHES = the default menu items.
 const INITIAL_DISHES: MenuItem[] = [
   {
     id: '1',
@@ -128,10 +159,10 @@ const INITIAL_DISHES: MenuItem[] = [
   },
 ];
 
-/** ---------- GLOBAL STATE ---------- */
+
 let globalMenuItems: MenuItem[] = [...INITIAL_DISHES];
 
-/** Exported functions to allow global access */
+// Exported functions to allow global access.
 export const getGlobalMenuItems = () => globalMenuItems;
 
 export const addGlobalMenuItem = (item: Omit<MenuItem, 'id'>) => {
@@ -144,12 +175,12 @@ export const removeGlobalMenuItem = (itemId: string) => {
   globalMenuItems = globalMenuItems.filter(item => item.id !== itemId);
 };
 
-/** ---------- MENU COMPONENT ---------- */
+
 export default function Menu() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [menuItems, setMenuItems] = useState<MenuItem[]>(getGlobalMenuItems());
 
-  // Sync global state updates with screen
+  // allows updates between screens
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       setMenuItems(getGlobalMenuItems());
@@ -157,7 +188,7 @@ export default function Menu() {
     return unsubscribe;
   }, [navigation]);
 
-  /** Add new item (used by AddMenu screen) */
+  // new items from addmenu.tsx
   const addMenuItem = (item: {
     name: string;
     description: string;
@@ -169,21 +200,19 @@ export default function Menu() {
     setMenuItems([...getGlobalMenuItems()]);
   };
 
-  /** Remove an item by ID */
+  // Remove items by ID
   const removeMenuItem = (itemId: string) => {
     removeGlobalMenuItem(itemId);
     setMenuItems([...getGlobalMenuItems()]);
   };
 
-  /** Getter for other screens */
   const getMenuItems = () => getGlobalMenuItems();
 
-  /** Attach helper functions to navigation params */
   useEffect(() => {
     navigation.setParams({ addMenuItem, removeMenuItem, getMenuItems });
   }, [navigation, menuItems]);
 
-  /** Calculate average price for each course */
+  //Calculate average price.
   const calculateCourseAverages = () => {
     const courseMap: { [key: string]: { total: number; count: number } } = {};
     
@@ -273,7 +302,7 @@ export default function Menu() {
   );
 }
 
-/** ---------- STYLES ---------- */
+
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#fff', padding: 16 },
   title: { fontSize: 26, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 },

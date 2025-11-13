@@ -19,6 +19,7 @@ Date accessed: 22/10/2025
 /*
 Author: React Native Community
 Title: React Native (TextInput and Form Patterns)
+Date Published: 2025
 Link: https://reactnative.dev/docs/textinput
 Date accessed: 22/10/2025
 */
@@ -26,9 +27,45 @@ Date accessed: 22/10/2025
 /*
 Author: React Documentation
 Title: Hooks API Reference (useState, useEffect)
+Date Published: 2025
 Link: https://react.dev/reference/react
 Date accessed: 22/10/2025
 */
+/*
+CODE ATTRIBUTION 
+Author: Net Ninja
+Title: TypeScript Tutorial #4 - Objects & Arrays
+Date Published: 2020
+Link: https://www.youtube.com/watch?v=157NopQ-chU
+Date accessed: 13/11/2025
+*/
+
+/*
+CODE ATTRIBUTION 
+Author: Code Garden
+Title: 6 NEW ES2023 Array Methods with React + TypeScript Examples
+Date Published: 2023
+Link: https://www.youtube.com/watch?v=_4M46HRHoIw
+Date accessed: 13/11/2025
+*/
+
+/*
+CODE ATTRIBUTION 
+Author: Moreality
+Title: Touchable Opacity Made Easy with React Native [In 9 Minutes] - 2022
+Date Published: 2022
+Link: https://www.youtube.com/watch?v=XeSxz_6vS04
+Date accessed: 13/11/2025
+*/
+
+/*Notable changes Made for The POE part 3. The Splash screen(App.tsx)
+
+1.I used colours from the original design (green and blue)
+2. fixed the issue of not being able to add more than one item in the add menu array.
+3. added a veiw menu button.
+4. fixed view styling for view current menu (the idea was so that it doesn't overlap for android)
+5. moved add menu button to the top (I have less issues with the keyboard covering it.) 
+*/ 
 
 
 import React, { useState, useEffect } from 'react';
@@ -269,7 +306,7 @@ export default function AddMenu() {
         )}
       </ScrollView>
 
-      {/* Fixed bottom View Current Menu button */}
+      
       <TouchableOpacity
         style={styles.fixedBottomButton}
         onPress={() => setShowExisting(!showExisting)}
