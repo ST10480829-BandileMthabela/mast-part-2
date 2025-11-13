@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   existingImage: { width: 50, height: 50, borderRadius: 8, marginRight: 10 },
   existingText: { flex: 1, fontSize: 14 },
   previewImage: { width: '100%', height: 150, marginTop: 10, borderRadius: 10 },
-  fixedBottomButton: { position: 'absolute', bottom: 16, left: 16, right: 16, backgroundColor: '#2196F3', paddingVertical: 12, borderRadius: 10, alignItems: 'center', elevation: 5 },
+  fixedBottomButton: { position: 'absolute', bottom: 16, left: 16, right: 16, backgroundColor: '#1f6a8c', paddingVertical: 12, borderRadius: 10, alignItems: 'center', elevation: 5 },
   fixedBottomButtonText: { color: '#fff', textAlign: 'center', fontWeight: 'bold', fontSize: 16 },
 });
 

@@ -209,12 +209,17 @@ export default function Menu() {
       <Text style={styles.title}>Our Menu</Text>
       
        <View style={styles.topActions}>
+        <View style={styles.topCountWrap}>
+      <Text style={styles.topCountText}>{menuItems.length} {menuItems.length === 1 ? 'item' : 'items'}</Text>
+    </View>
     <TouchableOpacity 
       style={styles.actionSmall}
       onPress={() => navigation.navigate('Filter')}
     >
       <Text style={styles.filterButtonText}>FILTER</Text>
     </TouchableOpacity>
+
+    
 
     <TouchableOpacity 
       style={styles.actionAdd}
@@ -357,6 +362,22 @@ const styles = StyleSheet.create({
     backgroundColor: '#1f6a8c',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  topCountWrap: {
+    backgroundColor: '#fff',
+    paddingHorizontal: 10,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginHorizontal: 8,
+    borderWidth: 1,
+    borderColor: '#e6eef2',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  topCountText: {
+    color: '#1f6a8c',
+    fontWeight: '700',
+    fontSize: 13,
   },
   averagesContainer: {
     backgroundColor: '#1f6a8c',
