@@ -250,6 +250,10 @@ export default function AddMenu() {
       <ScrollView>
         <Text style={styles.title}>Add Menu Item</Text>
 
+
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Add To Menu</Text>
+        </TouchableOpacity>
         {menuItemsToAdd.map((item, index) => (
           <View key={item.tempId} style={styles.card}>
             <Text style={styles.label}>Dish Name:</Text>
@@ -304,13 +308,7 @@ export default function AddMenu() {
           </View>
         ))}
 
-        <TouchableOpacity style={styles.addButton} onPress={handleAddNewFormRow}>
-          <Text style={styles.addButtonText}>+ Add Another Item</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-          <Text style={styles.submitButtonText}>Add To Menu</Text>
-        </TouchableOpacity>
+    
 
         {showExisting && (
           <View>
