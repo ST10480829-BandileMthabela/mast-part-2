@@ -183,9 +183,31 @@ export default function Menu() {
     navigation.setParams({ addMenuItem, removeMenuItem, getMenuItems });
   }, [navigation, menuItems]);
 
+  /** Calculate average price for each course */
+  const calculateCourseAverages = () => {
+    const courseMap: { [key: string]: { total: number; count: number } } = {};
+    
+    menuItems.forEach(item => {
+      if (!courseMap[item.course]) {
+        courseMap[item.course] = { total: 0, count: 0 };
+      }
+      courseMap[item.course].total += item.price;
+      courseMap[item.course].count += 1;
+    });
+
+    return Object.entries(courseMap).map(([course, data]) => ({
+      course,
+      average: data.total / data.count,
+      count: data.count
+    }));
+  };
+
+  const courseAverages = calculateCourseAverages();
+
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Our Menu</Text>
+      
        <View style={styles.topActions}>
     <TouchableOpacity 
       style={styles.actionSmall}
@@ -219,27 +241,28 @@ export default function Menu() {
               >
                 <Text style={styles.removeButtonText}>Remove</Text>
               </TouchableOpacity>
-
-              
             </View>
-
           </View>
-          
         ))
       )}
 
-
-
-
-
-
-
-     
-
-
-
-
-
+      {courseAverages.length > 0 && (
+        <View style={styles.averagesContainer}>
+          <Text style={styles.averagesTitle}>Avarage Course Prices </Text>
+          <View style={styles.averagesGrid}>
+            {courseAverages.map((item, index) => (
+              <View key={index} style={styles.averageCard}>
+                <View style={styles.courseHeader}>
+                  <Text style={styles.courseName}>{item.course}</Text>
+                  <Text style={styles.itemCountBadge}>{item.count}</Text>
+                </View>
+                <Text style={styles.averagePrice}>R{item.average.toFixed(2)}</Text>
+                <Text style={styles.averageLabel}>avg price</Text>
+              </View>
+            ))}
+          </View>
+        </View>
+      )}
 
     </ScrollView>
   );
@@ -251,7 +274,7 @@ const styles = StyleSheet.create({
   title: { fontSize: 26, fontWeight: 'bold', textAlign: 'center', marginBottom: 16 },
   card: {
     flexDirection: 'row',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#f9f9f9ff',
     borderRadius: 12,
     marginBottom: 12,
     overflow: 'hidden',
@@ -334,5 +357,84 @@ const styles = StyleSheet.create({
     backgroundColor: '#1f6a8c',
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  averagesContainer: {
+    backgroundColor: '#1f6a8c',
+    borderRadius: 14,
+    padding: 16,
+    marginTop: 24,
+    marginBottom: 24,
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+  },
+  averagesTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 14,
+    textAlign: 'center',
+  },
+  averagesGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 12,
+    justifyContent: 'space-between',
+  },
+  averageCard: {
+    flex: 1,
+    minWidth: '48%',
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    padding: 14,
+    alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+  },
+  courseHeader: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  courseName: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#1f6a8c',
+    flex: 1,
+  },
+  itemCountBadge: {
+    backgroundColor: '#ff3b30',
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: '600',
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+    borderRadius: 12,
+    overflow: 'hidden',
+  },
+  averagePrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#2e7d32',
+    marginBottom: 4,
+  },
+  averageLabel: {
+    fontSize: 11,
+    color: '#999',
+    fontStyle: 'italic',
+    textAlign: 'center',
   },
 });
