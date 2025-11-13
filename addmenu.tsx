@@ -59,107 +59,46 @@ import { useNavigation, NavigationProp } from '@react-navigation/native';
 import { RootStackParamList } from './App';
 import { Picker } from '@react-native-picker/picker';
 import { MenuItem } from './menu';
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * FormDataItem Interface
- * Structure for temporary menu items being added
- */
-interface FormDataItem {
-  tempId: string;           // Temporary ID for form rows (not saved to menu)
-  name: string;             // Dish name
-  description: string;      // Dish description
-  course: string;           // Course type: 'Appetiser', 'Main Course', 'Dessert'
-  price: string;            // Price as string (sanitized before submission)
-  image: string;            // Image URL
-}
-
-// Global variable for form state tracking (GLOBAL VARIABLE requirement)
+// global variable requirement
 let globalFormItems: FormDataItem[] = [];
 
-/**
- * AddMenu Component
- * Allows chefs to add multiple menu items at once
- * Features: form validation, existing item management, price input sanitization
- */
 export default function AddMenu() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  
-  // State for new items being added (supports multiple items)
-  const [menuItemsToAdd, setMenuItemsToAdd] = useState<FormDataItem[]>([
-    {
-      tempId: '1',
-      name: '',
-      description: '',
-      course: 'main course',
-      price: '',
-      image: '',
-    }
-  ]);
+  const route = useRoute<RouteProp<RootStackParamList, 'AddMenu'>>();
 
-  // State for displaying existing menu items
+  const [menuItemsToAdd, setMenuItemsToAdd] = useState<FormDataItem[]>([
+    { tempId: '1', name: '', description: '', course: 'Main Course', price: '', image: '' },
+  ]);
   const [existingMenuItems, setExistingMenuItems] = useState<MenuItem[]>([]);
-  // State for form validation errors
-  const [errors, setErrors] = useState<{[key: string]: {[key: string]: string}}>({});
-  // State for collapsible existing items section
+  const [errors, setErrors] = useState<{ [key: string]: { [key: string]: string } }>({});
   const [showExisting, setShowExisting] = useState<boolean>(false);
 
-  /**
-   * Load Existing Menu Items
-   * Fetches current menu items on component mount
-   */
   useEffect(() => {
+    // Try to get existing menu items from route params or fallback global
     const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
     const getMenuItems = menuRoute?.params?.getMenuItems;
 
     if (getMenuItems) {
       const items = getMenuItems();
       setExistingMenuItems(items);
+    } else {
+      const items = getGlobalMenuItems();
+      setExistingMenuItems(items);
     }
   }, [navigation]);
 
-  /**
-   * validateFormItem()
-   * Validates a single form item and returns error object
-   */
-  const validateFormItem = (item: FormDataItem): {[key: string]: string} => {
-    const newErrors: {[key: string]: string} = {};
-    if (!item.name.trim()) {
-      newErrors.name = 'Name is required';
-    }
-    if (!item.description.trim()) {
-      newErrors.description = 'Description is required';
-    }
-    if (!item.price.trim()) {
-      newErrors.price = 'Price is required';
-    } else if (isNaN(Number(item.price))) {
-      newErrors.price = 'Price must be a number';
-    }
+  const validateFormItem = (item: FormDataItem): { [key: string]: string } => {
+    const newErrors: { [key: string]: string } = {};
+    if (!item.name.trim()) newErrors.name = 'Name is required';
+    if (!item.description.trim()) newErrors.description = 'Description is required';
+    if (!item.price.trim()) newErrors.price = 'Price is required';
+    else if (isNaN(Number(item.price))) newErrors.price = 'Price must be numeric';
     return newErrors;
   };
 
-  // FOR LOOP to validate all items
   const validateAllItems = (): boolean => {
     let isValid = true;
-    const newErrors: {[key: string]: {[key: string]: string}} = {};
+    const newErrors: { [key: string]: { [key: string]: string } } = {};
     for (let i = 0; i < menuItemsToAdd.length; i++) {
       const itemErrors = validateFormItem(menuItemsToAdd[i]);
       if (Object.keys(itemErrors).length > 0) {
@@ -171,294 +110,179 @@ export default function AddMenu() {
     return isValid;
   };
 
-  // Function to update form item field
-  // Sanitize price input so dots are used for decimals and invalid characters removed
   const sanitizePriceInput = (text: string) => {
     let dotFound = false;
     let out = '';
     for (let i = 0; i < text.length; i++) {
       const ch = text[i];
-      if (ch >= '0' && ch <= '9') {
+      if (ch >= '0' && ch <= '9') out += ch;
+      else if (ch === '.' && !dotFound) {
         out += ch;
-      } else if ((ch === '.' || ch === ',') && !dotFound) {
-        // convert first comma or dot to dot
-        out += '.';
         dotFound = true;
       }
-      // ignore other characters
     }
     return out;
   };
 
-  const updateFormItem = (tempId: string, field: keyof FormDataItem, value: string) => {
-    const newValue = field === 'price' ? sanitizePriceInput(value) : value;
-    setMenuItemsToAdd(prevItems =>
-      prevItems.map(item =>
-        item.tempId === tempId ? { ...item, [field]: newValue } : item
-      )
+  const handleAddNewFormRow = () => {
+    const newItem: FormDataItem = {
+      tempId: String(Date.now()),
+      name: '',
+      description: '',
+      course: 'Main Course',
+      price: '',
+      image: '',
+    };
+    setMenuItemsToAdd(prev => [...prev, newItem]);
+  };
+
+  const handleInputChange = (id: string, field: keyof FormDataItem, value: string) => {
+    setMenuItemsToAdd(prev =>
+      prev.map(item => (item.tempId === id ? { ...item, [field]: value } : item))
     );
   };
 
-
-
-  // Function to remove existing menu item
-  const removeExistingItem = (itemId: string) => {
-    const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
-    const removeMenuItem = menuRoute?.params?.removeMenuItem;
-
-    if (removeMenuItem) {
-      removeMenuItem(itemId);
-      // Remove from local state
-      setExistingMenuItems(prevItems => prevItems.filter(item => item.id !== itemId));
-      Alert.alert('Success', 'Menu item removed successfully!');
-    }
-  };
-
-  // WHILE LOOP to submit all items
   const handleSubmit = () => {
-    if (validateAllItems()) {
-      const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
-      const addMenuItem = menuRoute?.params?.addMenuItem;
-
-      if (addMenuItem) {
-        let index = 0;
-        while (index < menuItemsToAdd.length) {
-          const item = menuItemsToAdd[index];
-          const menuItem = {
-            name: item.name,
-            description: item.description,
-            course: item.course,
-            // price input sanitized to use dot; parseFloat will work
-            price: parseFloat(item.price),
-            image: item.image,
-          };
-          addMenuItem(menuItem);
-          index++;
-        }
-
-        Alert.alert(
-          'Success',
-          'Menu item added successfully!',
-          [
-            {
-              text: 'Add another',
-              onPress: () => {
-                // Reset the form so chef can add another item
-                setMenuItemsToAdd([
-                  {
-                    tempId: '1',
-                    name: '',
-                    description: '',
-                    course: 'main course',
-                    price: '',
-                    image: '',
-                  }
-                ]);
-                setErrors({});
-                globalFormItems = [];
-              }
-            },
-            {
-              text: 'Done',
-              onPress: () => {
-                setMenuItemsToAdd([
-                  {
-                    tempId: '1',
-                    name: '',
-                    description: '',
-                    course: 'main course',
-                    price: '',
-                    image: '',
-                  }
-                ]);
-                setErrors({});
-                globalFormItems = [];
-                navigation.navigate('Menu', {});
-              }
-            }
-          ],
-          { cancelable: false }
-        );
-      } else {
-        Alert.alert('Error', 'Could not add menu item. Please try again.');
-      }
+    if (!validateAllItems()) {
+      Alert.alert('Validation Error', 'Please fill all required fields correctly.');
+      return;
     }
-  };
 
-  // Function to render menu item form
-  const renderMenuItemForm = (item: FormDataItem) => {
-    const itemErrors = errors[item.tempId] || {};
+    // Safely get addMenuItem or fallback to global function
+    const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
+    const addMenuItem = menuRoute?.params?.addMenuItem;
 
-    return (
-      <View key={item.tempId} style={styles.formCard}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.cardTitle}>New Item</Text>
-        </View>
+    if (!addMenuItem) {
+      Alert.alert('Error', 'Unable to access menu functions. Please try again.');
+      return;
+    }
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Name</Text>
-          <TextInput
-            style={[styles.input, itemErrors.name && styles.inputError]}
-            placeholder='Enter menu item name'
-            value={item.name}
-            onChangeText={(text) => updateFormItem(item.tempId, 'name', text)}
-          />
-          {itemErrors.name ? <Text style={styles.errorText}>{itemErrors.name}</Text> : null}
-        </View>
+    menuItemsToAdd.forEach(item => {
+      addMenuItem({
+        name: item.name,
+        description: item.description,
+        course: item.course,
+        price: Number(item.price),
+        image: item.image,
+      });
+    });
 
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={[styles.input, styles.textArea, itemErrors.description && styles.inputError]}
-            placeholder='Enter menu item description'
-            value={item.description}
-            onChangeText={(text) => updateFormItem(item.tempId, 'description', text)}
-            multiline
-            numberOfLines={3}
-          />
-          {itemErrors.description ? <Text style={styles.errorText}>{itemErrors.description}</Text> : null}
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Course</Text>
-          <View style={styles.pickerContainer}>
-            <Picker
-              selectedValue={item.course}
-              onValueChange={(itemValue) => updateFormItem(item.tempId, 'course', itemValue)}
-            >
-              <Picker.Item label='Appetiser' value='appetiser' />
-              <Picker.Item label='Main Course' value='main course' />
-              <Picker.Item label='Dessert' value='dessert' />
-            </Picker>
-          </View>
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Price (R)</Text>
-          <TextInput
-            style={[styles.input, itemErrors.price && styles.inputError]}
-            placeholder='Enter price'
-            value={item.price}
-            onChangeText={(text) => updateFormItem(item.tempId, 'price', text)}
-            keyboardType='decimal-pad'
-          />
-          {itemErrors.price ? <Text style={styles.errorText}>{itemErrors.price}</Text> : null}
-        </View>
-
-        <View style={styles.inputGroup}>
-          <Text style={styles.label}>Image URL</Text>
-          <TextInput
-            style={[styles.input, itemErrors.image && styles.inputError]}
-            placeholder='Enter image URL'
-            value={item.image}
-            onChangeText={(text) => updateFormItem(item.tempId, 'image', text)}
-          />
-          {itemErrors.image ? <Text style={styles.errorText}>{itemErrors.image}</Text> : null}
-        </View>
-      </View>
-    );
-  };
-
-  // Function to render existing menu item
-  const renderExistingMenuItem = (item: MenuItem) => {
-    return (
-      <View key={item.id} style={styles.existingItemCard}>
-        <Image
-          source={{ uri: item.image }}
-          style={styles.existingItemImage}
-        />
-        <View style={styles.existingItemContent}>
-          <View style={styles.existingItemHeader}>
-            <View style={{ flex: 1 }}>
-              <Text style={styles.existingItemName}>{item.name}</Text>
-              <Text style={styles.existingItemCourse}>{item.course}</Text>
-            </View>
-            <Text style={styles.existingItemPrice}>R{item.price.toFixed(2)}</Text>
-          </View>
-          <Text style={styles.existingItemDescription}>{item.description}</Text>
-          <TouchableOpacity
-            style={styles.removeExistingButton}
-            onPress={() => {
-              Alert.alert(
-                'Remove Item',
-                `Are you sure you want to remove "${item.name}"?`,
-                [
-                  { text: 'Cancel', onPress: () => {} },
-                  { text: 'Remove', onPress: () => removeExistingItem(item.id), style: 'destructive' }
-                ]
-              );
-            }}
-          >
-            <Text style={styles.removeExistingButtonText}>Remove from Menu</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+    Alert.alert('Success', 'Menu item(s) added successfully!', [
+      {
+        text: 'Add another',
+        onPress: () => {
+          setMenuItemsToAdd([{ tempId: '1', name: '', description: '', course: 'Main Course', price: '', image: '' }]);
+          setErrors({});
+          globalFormItems = [];
+        },
+      },
+      {
+        text: 'Done',
+        onPress: () => {
+          setMenuItemsToAdd([{ tempId: '1', name: '', description: '', course: 'Main Course', price: '', image: '' }]);
+          setErrors({});
+          globalFormItems = [];
+          navigation.navigate('Menu'); // ✅ fixed: no params reset
+        },
+      },
+    ]);
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
     >
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.form}>
-          <Text style={styles.title}>Add & Manage Menu Items</Text>
+      <ScrollView>
+        <Text style={styles.title}>Add Menu Item</Text>
 
-          {/* Top action buttons: Back and Submit */}
-          <View style={styles.topButtonGroup}>
-            <TouchableOpacity 
-              style={styles.cancelButton}
-              onPress={() => navigation.goBack()}
+        {menuItemsToAdd.map((item, index) => (
+          <View key={item.tempId} style={styles.card}>
+            <Text style={styles.label}>Dish Name:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter dish name"
+              value={item.name}
+              onChangeText={text => handleInputChange(item.tempId, 'name', text)}
+            />
+            {errors[item.tempId]?.name && <Text style={styles.error}>{errors[item.tempId].name}</Text>}
+
+            <Text style={styles.label}>Description:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter description"
+              value={item.description}
+              onChangeText={text => handleInputChange(item.tempId, 'description', text)}
+            />
+            {errors[item.tempId]?.description && <Text style={styles.error}>{errors[item.tempId].description}</Text>}
+
+            <Text style={styles.label}>Course:</Text>
+            <Picker
+              selectedValue={item.course}
+              onValueChange={value => handleInputChange(item.tempId, 'course', value)}
             >
-              <Text style={styles.cancelButtonText}>BACK TO MENU</Text>
-            </TouchableOpacity>
+              <Picker.Item label="Appetiser" value="Appetiser" />
+              <Picker.Item label="Main Course" value="Main Course" />
+              <Picker.Item label="Dessert" value="Dessert" />
+            </Picker>
 
-            <TouchableOpacity 
-              style={styles.submitButton}
-              onPress={handleSubmit}
-            >
-              <Text style={styles.submitButtonText}>ADD ITEM</Text>
-            </TouchableOpacity>
+            <Text style={styles.label}>Price (R):</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter price"
+              keyboardType="numeric"
+              value={item.price}
+              onChangeText={text => handleInputChange(item.tempId, 'price', sanitizePriceInput(text))}
+            />
+            {errors[item.tempId]?.price && <Text style={styles.error}>{errors[item.tempId].price}</Text>}
+
+            <Text style={styles.label}>Image URL:</Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter image URL"
+              value={item.image}
+              onChangeText={text => handleInputChange(item.tempId, 'image', text)}
+            />
+
+            {item.image ? (
+              <Image source={{ uri: item.image }} style={styles.previewImage} />
+            ) : null}
           </View>
+        ))}
 
-          {/* Section for existing items */}
-          {existingMenuItems.length > 0 && (
-            <View style={styles.section}>
-              <TouchableOpacity 
-                style={styles.sectionHeader}
-                onPress={() => setShowExisting(!showExisting)}
-              >
-                <Text style={styles.sectionTitle}>
-                   Current Menu ({existingMenuItems.length} items)
-                </Text>
-                <Text style={styles.toggleIcon}>{showExisting ? '' : ''}</Text>
-              </TouchableOpacity>
-              
-              {showExisting && (
-                <View style={styles.existingItemsList}>
-                  {existingMenuItems.map(item => renderExistingMenuItem(item))}
-                </View>
-              )}
-            </View>
-          )}
+        <TouchableOpacity style={styles.addButton} onPress={handleAddNewFormRow}>
+          <Text style={styles.addButtonText}>+ Add Another Item</Text>
+        </TouchableOpacity>
 
-          {/* Section for adding new items */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}> Add New Item</Text>
-            
-            {menuItemsToAdd.map(item => renderMenuItemForm(item))}
+        <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+          <Text style={styles.submitButtonText}>Submit All Items</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.toggleButton}
+          onPress={() => setShowExisting(!showExisting)}
+        >
+          <Text style={styles.toggleButtonText}>
+            {showExisting ? 'Hide Current Menu' : 'View Current Menu'}
+          </Text>
+        </TouchableOpacity>
+
+        {showExisting && (
+          <View>
+            <Text style={styles.sectionTitle}>Current Menu</Text>
+            {existingMenuItems.map((item, index) => (
+              <View key={item.id} style={styles.existingItemCard}>
+                <Image source={{ uri: item.image }} style={styles.existingImage} />
+                <Text style={styles.existingText}>{item.name} - R{item.price.toFixed(2)}</Text>
+                <Text style={styles.existingText}>{item.course}</Text>
+              </View>
+            ))}
           </View>
-
-          {/* Buttons moved to top for easier access */}
-
-          <View style={styles.bottomSpacing} />
-        </View>
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -50,10 +50,10 @@ import { MenuItem, getGlobalMenuItems } from './menu';
 let globalMenuItems: MenuItem[] = [];
 
 /*
- * Filter Component
- * Provides course-based filtering and displays filtered menu items
- * WHILE LOOP: used in getFilteredItems() to filter items by course
- * FOR-IN LOOP concept: map() iterates courseOptions array
+ Filter Component
+ Provides course-based filtering and displays filtered menu items
+ WHILE LOOP: used in getFilteredItems() to filter items by course
+ FOR-IN LOOP concept: map() iterates courseOptions array
  */
 export default function Filter() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -64,10 +64,10 @@ export default function Filter() {
   const [allMenuItems, setAllMenuItems] = useState<MenuItem[]>([]);
 
   /*
-   * Initialize Filter - Load Menu Items
-   * Fetches menu items on component mount
-   * Uses fallback getter if navigation params unavailable
-   */
+    Initialize Filter - Load Menu Items
+    Fetches menu items on component mount
+    Uses fallback getter if navigation params unavailable
+*/
   useEffect(() => {
     const menuRoute = navigation.getState().routes.find(route => route.name === 'Menu');
     const getMenuItems = menuRoute?.params?.getMenuItems;
