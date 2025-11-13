@@ -80,7 +80,8 @@ function HomeScreen({ navigation }: any) {
 return (
 
 <View style={styles.container}>
-<Text style={styles.title}>WELCOME TO CAFE FRESH</Text>
+<Text style={styles.title}>Christoffel's Private Chef menu</Text>
+<Text style={styles.description}>tap the image.</Text>
 
 <TouchableOpacity 
 onPress={() => navigation.navigate('Menu')}>
@@ -89,13 +90,9 @@ source={{ uri: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?ixl
 style={styles.mainImage}/>
 </TouchableOpacity>
 
-<Text style={styles.description}>Fresh cafe isn't just a place get food, it's a destination where food is celebrated.</Text>
 
-<TouchableOpacity 
-style={styles.menuButton}
-onPress={() => navigation.navigate('Menu')}>
-<Text style={styles.buttonText}>View Menu</Text>
-</TouchableOpacity>
+
+
 
 <StatusBar style="auto"/>
 </View>
