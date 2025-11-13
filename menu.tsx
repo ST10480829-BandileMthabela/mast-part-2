@@ -80,7 +80,7 @@ Link: https://www.youtube.com/watch?v=XeSxz_6vS04
 Date accessed: 13/11/2025
 */
 
-/*Notable changes Made for The POE part 3. The Splash screen(App.tsx)
+/*Notable changes 
 
 1. users can remove items
 2. filtter screen button

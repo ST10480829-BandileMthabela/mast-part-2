@@ -58,7 +58,7 @@ Link: https://www.youtube.com/watch?v=XeSxz_6vS04
 Date accessed: 13/11/2025
 */
 
-/*Notable changes Made for The POE part 3. The Splash screen(App.tsx)
+/*Notable changes 
 
 1.I used colours from the original design (green and blue)
 2. fixed the issue of not being able to add more than one item in the add menu array.
